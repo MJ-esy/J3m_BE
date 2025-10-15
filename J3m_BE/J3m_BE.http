@@ -1,0 +1,6 @@
+@J3m_BE_HostAddress = http://localhost:5293
+
+GET {{J3m_BE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
