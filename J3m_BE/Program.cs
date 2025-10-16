@@ -1,4 +1,6 @@
 
+using J3m_BE.Extensions;
+
 namespace J3m_BE
 {
     public class Program
@@ -8,8 +10,10 @@ namespace J3m_BE
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddJ3MCore();
 
             builder.Services.AddControllers();
+            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
