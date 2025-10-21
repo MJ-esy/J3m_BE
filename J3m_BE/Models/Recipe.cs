@@ -1,0 +1,30 @@
+using System.ComponentModel.DataAnnotations;
+using J3m_BE.Models.Links;
+
+namespace J3m_BE.Models;
+
+// Model representing a recipe
+
+public class Recipe
+{
+    [Key]
+    public int RecipeId { get; set; }
+    
+    [Required, MaxLength(100)]
+    public string RecipeName { get; set; } = string.Empty;
+    
+    [MaxLength(4000)]
+    public string? Description { get; set; }
+    
+    public int PrepTimeMinutes { get; set; }
+    
+    [MaxLength(1024)]
+    public string? ImageUrl { get; set; }
+    
+    // Navigation property for the many-to-many relationships
+    public ICollection<IngredientRecipe> IngredientLinks { get; set; } = new List<IngredientRecipe>();
+    public ICollection<DietRecipe> DietLinks { get; set; } = new List<DietRecipe>();
+    public ICollection<UserRecipe> UserLinks { get; set; } = new List<UserRecipe>();
+
+
+}
