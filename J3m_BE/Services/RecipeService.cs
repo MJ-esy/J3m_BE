@@ -34,7 +34,7 @@ public class RecipeService : IRecipeService
         var recipe = await _repo.GetByIdAsync(id);
         if (recipe == null) return false;
         
-        _repo.Delete(recipe);
+        _repo.Remove(recipe);
         await _repo.SaveChangesAsync();
         return true;
     }

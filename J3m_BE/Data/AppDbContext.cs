@@ -42,8 +42,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         b.Entity<Ingredient>()
             .HasOne(i => i.FoodGroup)
             .WithMany(f => f.Ingredients)
-            .HasForeignKey(i => i.FoodGroupId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .HasForeignKey(i => i.FoodGroupId);
         
         b.Entity<UserRecipe>()
             .HasOne(u => u.User)
