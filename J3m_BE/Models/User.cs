@@ -8,7 +8,7 @@ namespace J3m_BE.Models;
 public class User
 {
     [Key]
-    public string UserId { get; set; }
+    public int UserId { get; set; }
     
     [Required, MaxLength(50)]
     public string Username { get; set; } = string.Empty;
