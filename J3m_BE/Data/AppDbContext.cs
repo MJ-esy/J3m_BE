@@ -31,6 +31,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder b)
     {
+        base.OnModelCreating(b);
+
         // Composite keys
         b.Entity<UserRecipe>().HasKey(x => new { x.UserId, x.RecipeId });
         b.Entity<DietRecipe>().HasKey(x => new { x.DietId, x.RecipeId });
@@ -54,5 +56,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(r => r.Recipe)
             .WithMany(ur => ur.UserLinks)
             .HasForeignKey(r => r.RecipeId);
-    }
+
+        //Data Seeding
+        b.SeedAll();
+  }
+
+    
 }
