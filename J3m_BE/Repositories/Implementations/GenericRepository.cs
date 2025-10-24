@@ -43,12 +43,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         => _dbSet.Update(entity);
 
     // Delete an entity
-    public void Delete(T entity)
+    public void Remove(T entity)
         => _dbSet.Remove(entity);
     
     // Check if an entity exists by ID
-    public async Task<bool> ExistsAsync(int id)
-        => await _dbSet.FindAsync(id) != null;
+    public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+        => await _dbSet.AsNoTracking().AnyAsync(predicate);
     
     // Save changes to the database
     public async Task SaveChangesAsync()
