@@ -8,15 +8,14 @@ namespace J3m_BE.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddJ3MCore(this IServiceCollection services)
-    {
-        // Add Repositories here
-        
-        // Add Services here
-        
-        // Add Configurations here
-        
-        
-        return services;
-    }
+  public static IServiceCollection AddJ3MCore(this IServiceCollection services)
+  {
+    // Add Repositories here
+
+    // Add Services here
+
+    // Add Configurations here
+
+    return services;
+  }
 }
