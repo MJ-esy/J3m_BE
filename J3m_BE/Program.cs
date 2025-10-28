@@ -1,6 +1,7 @@
 
 using J3m_BE.Data;
 using J3m_BE.Extensions;
+using J3m_BE.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE
@@ -32,14 +33,15 @@ namespace J3m_BE
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            
             app.UseHttpsRedirection();
 
+            // app.UseAuthentication();
             app.UseAuthorization();
-
-
+            
             app.MapControllers();
-
             app.Run();
         }
     }
