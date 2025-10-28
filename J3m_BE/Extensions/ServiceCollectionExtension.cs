@@ -1,3 +1,8 @@
+using J3m_BE.Repositories.Implementations;
+using J3m_BE.Repositories.Interfaces;
+using J3m_BE.Services;
+using J3m_BE.Services.Interfaces;
+
 namespace J3m_BE.Extensions;
 
 // -- ----------------------------------------------------------------------------
@@ -8,14 +13,17 @@ namespace J3m_BE.Extensions;
 
 public static class ServiceCollectionExtension
 {
-  public static IServiceCollection AddJ3MCore(this IServiceCollection services)
-  {
-    // Add Repositories here
-
-    // Add Services here
-
-    // Add Configurations here
-
-    return services;
-  }
+    public static IServiceCollection AddJ3MCore(this IServiceCollection services)
+    {
+        // Add Repositories here
+        services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
+        
+        // Add Services here
+        services.AddScoped<IFoodGroupService, FoodGroupService>();
+        
+        // Add Configurations here
+        
+        
+        return services;
+    }
 }

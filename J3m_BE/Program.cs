@@ -1,6 +1,7 @@
 
 using J3m_BE.Data;
 using J3m_BE.Extensions;
+using J3m_BE.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE
@@ -26,21 +27,23 @@ namespace J3m_BE
 
       var app = builder.Build();
 
-      // Configure the HTTP request pipeline.
-      if (app.Environment.IsDevelopment())
-      {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-      }
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            
+            app.UseHttpsRedirection();
 
-      app.UseHttpsRedirection();
-
-      app.UseAuthorization();
-
-
-      app.MapControllers();
-
-      app.Run();
+            // app.UseAuthentication();
+            app.UseAuthorization();
+            
+            app.MapControllers();
+            app.Run();
+        }
     }
   }
 }
