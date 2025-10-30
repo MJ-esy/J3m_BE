@@ -17,9 +17,11 @@ public static class ServiceCollectionExtension
     {
         // Add Repositories here
         services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
+        services.AddScoped<IIngredientRepository, IngredientRepository>();
         
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
+        services.AddScoped<IIngredientService, IngredientService>();
         
         // Add Configurations here
         

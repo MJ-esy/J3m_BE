@@ -24,7 +24,6 @@
   <ItemGroup>
     <Folder Include="DTOs\Allergies\" />
     <Folder Include="DTOs\Diets\" />
-    <Folder Include="DTOs\Ingredients\" />
     <Folder Include="DTOs\NutrientGroups\" />
     <Folder Include="DTOs\Recipes\" />
     <Folder Include="DTOs\User\" />
