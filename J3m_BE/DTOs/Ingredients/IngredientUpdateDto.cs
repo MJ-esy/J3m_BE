@@ -6,7 +6,7 @@ namespace J3m_BE.DTOs.Ingredients;
 public class IngredientUpdateDto
 {
     public string IngredientName { get; set; } = string.Empty;
-    public int FoodGroupId { get; set; }
+    public int? FoodGroupId { get; set; }
     
     // Options to update links with existing entities
     public List<int>? AllergyIds { get; set; }

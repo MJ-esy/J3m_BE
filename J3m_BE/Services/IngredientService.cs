@@ -29,7 +29,7 @@ public class IngredientService : IIngredientService
         {
             IngredientId = i.IngredientId,
             IngredientName = i.IngredientName,
-            FoodGroupName = i.FoodGroup?.FoodGroupName
+            FoodGroupName = i.FoodGroup?.FoodGroupName ?? "Uncategorized"
         });
     }
     
@@ -46,7 +46,7 @@ public class IngredientService : IIngredientService
         {
             IngredientId = ingredient.IngredientId,
             IngredientName = ingredient.IngredientName,
-            FoodGroupName = ingredient.FoodGroup?.FoodGroupName ?? "Unknown",
+            FoodGroupName = ingredient.FoodGroup != null ? ingredient.FoodGroup.FoodGroupName : "Uncategorized",
             Allergies = ingredient.AllergyLinks.Select(a => a.Allergy!.AllergyName),
             NutrientGroups = ingredient.NutrientLinks.Select(ng => ng.NutrientGroup!.NutrientGroupName)
         };
@@ -85,7 +85,7 @@ public class IngredientService : IIngredientService
         if (entity is null)
             throw new NotFoundDomainException($"Ingredient with ID {id} not found.");
         
-        entity.IngredientName = dto.IngredientName.Trim();
+        entity.IngredientName = dto.IngredientName?.Trim() ?? entity.IngredientName;
         entity.FoodGroupId = dto.FoodGroupId;
         
         _repo.Update(entity);
