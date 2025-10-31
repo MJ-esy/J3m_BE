@@ -24,13 +24,11 @@
   <ItemGroup>
     <Folder Include="DTOs\Allergies\" />
     <Folder Include="DTOs\Diets\" />
-    <Folder Include="DTOs\FoodGroups\" />
     <Folder Include="DTOs\Ingredients\" />
     <Folder Include="DTOs\NutrientGroups\" />
     <Folder Include="DTOs\Recipes\" />
     <Folder Include="DTOs\User\" />
     <Folder Include="Filters\" />
-    <Folder Include="Middleware\" />
     <Folder Include="Migrations\" />
     <Folder Include="Options\" />
   </ItemGroup>
