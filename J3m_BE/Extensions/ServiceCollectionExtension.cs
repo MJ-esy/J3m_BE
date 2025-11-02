@@ -17,13 +17,15 @@ public static class ServiceCollectionExtension
     {
         // Add Repositories here
         services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
-        
+        services.AddScoped<INutrientGroupRepository, NutrientGroupRepository>();
+
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
-        
+        services.AddScoped<INutrientGroupService, NutrientGroupService>();
+
         // Add Configurations here
-        
-        
+
+
         return services;
     }
 }
