@@ -1,6 +1,6 @@
 ﻿namespace J3m_BE.DTOs.NutrientGroups
 {
-  public class CreateNutrientGroupDTO
+  public class CreateNutrientGroupDto
   {
     public int NutrientGroupId { get; set; }
     public string NutrientGroupName { get; set; } = string.Empty;
