@@ -7,8 +7,8 @@ namespace J3m_BE.Repositories.Interfaces
     {
         Task<List<AllergyDto>> GetAllAllergiesAsync();
         Task<AllergyDto?> GetAllergyByIdAsync(int allergyId);
-        Task<AllergyDto> CreateAllergyAsync(AllergyCreateDto allergyCreateDto);
-        Task<AllergyDto?> UpdateAllergyAsync(int allergyId, AllergyUpdateDto allergyUpdateDto);
+        Task<AllergyCreateDto> CreateAllergyAsync(AllergyCreateDto allergyCreateDto);
+        Task<AllergyUpdateDto?> UpdateAllergyAsync(int allergyId, AllergyUpdateDto allergyUpdateDto);
         Task<bool> DeleteAllergyAsync(int allergyId);
 
     }

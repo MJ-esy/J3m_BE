@@ -43,7 +43,7 @@ namespace J3m_BE.Repositories.Implementations
         }
 
         // Create/add a new allergy
-        public async Task<AllergyDto> CreateAllergyAsync(AllergyCreateDto allergyCreateDto)
+        public async Task<AllergyCreateDto> CreateAllergyAsync(AllergyCreateDto allergyCreateDto)
         {
             var newAllergy = new Allergy
             {
@@ -53,7 +53,7 @@ namespace J3m_BE.Repositories.Implementations
             _context.Allergies.Add(newAllergy);
             await _context.SaveChangesAsync();
 
-            return new AllergyDto
+            return new AllergyCreateDto
             {
                 AllergyId = newAllergy.AllergyId,
                 AllergyName = newAllergy.AllergyName
@@ -62,7 +62,7 @@ namespace J3m_BE.Repositories.Implementations
         }
 
         // Update an existing allergy
-        public async Task<AllergyDto?> UpdateAllergyAsync(int allergyId, AllergyUpdateDto allergyUpdateDto)
+        public async Task<AllergyUpdateDto?> UpdateAllergyAsync(int allergyId, AllergyUpdateDto allergyUpdateDto)
         {
             var allergy = await _context.Allergies.FindAsync(allergyId);
             if (allergy == null) return null;
@@ -70,7 +70,7 @@ namespace J3m_BE.Repositories.Implementations
             allergy.AllergyName = allergyUpdateDto.AllergyName;
             await _context.SaveChangesAsync();
 
-            return new AllergyDto
+            return new AllergyUpdateDto
             {
                 AllergyId = allergy.AllergyId,
                 AllergyName = allergy.AllergyName

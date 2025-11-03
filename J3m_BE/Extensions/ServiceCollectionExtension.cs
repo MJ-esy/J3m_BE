@@ -1,3 +1,8 @@
+using J3m_BE.Repositories.Implementations;
+using J3m_BE.Repositories.Interfaces;
+using J3m_BE.Services.Implementations;
+using J3m_BE.Services.Interfaces;
+
 namespace J3m_BE.Extensions;
 
 // -- ----------------------------------------------------------------------------
@@ -10,12 +15,12 @@ public static class ServiceCollectionExtension
 {
   public static IServiceCollection AddJ3MCore(this IServiceCollection services)
   {
-    // Add Repositories here
+        // Add Repositories here
+        services.AddScoped<IAllergyRepository, AllergyRepository>();
+        // Add Services here
+        services.AddScoped<IAllergyService, AllergyService>();
+        // Add Configurations here
 
-    // Add Services here
-
-    // Add Configurations here
-
-    return services;
+        return services;
   }
 }
