@@ -1,3 +1,4 @@
+using J3m_BE.Repositories;
 using J3m_BE.Repositories.Implementations;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services;
@@ -17,9 +18,11 @@ public static class ServiceCollectionExtension
     {
         // Add Repositories here
         services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
+        services.AddScoped<IRecipeRepository, RecipeRepository>();
         
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
+        services.AddScoped<IRecipeService, RecipeService>();
         
         // Add Configurations here
         
