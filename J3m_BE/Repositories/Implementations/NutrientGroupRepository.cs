@@ -17,6 +17,7 @@ namespace J3m_BE.Repositories.Implementations
                 _context.NutrientGroups
                   .AsNoTracking()
                   .Include(n => n.IngredientLinks)
+                    .ThenInclude(i => i.Ingredient)
                   .FirstOrDefaultAsync(n => n.NutrientGroupId == id);
 
         //Fetch all NutrientGroups with count of associated Ingredients
