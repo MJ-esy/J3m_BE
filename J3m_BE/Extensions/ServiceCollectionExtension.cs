@@ -19,13 +19,13 @@ public static class ServiceCollectionExtension
         services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
         services.AddScoped<INutrientGroupRepository, NutrientGroupRepository>();
 
-        services.AddScoped<IDietRepository, IDietRepository>();
+        services.AddScoped<IDietRepository, DietRepository>();
 
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
         services.AddScoped<INutrientGroupService, NutrientGroupService>();
 
-        services.AddScoped<IDietService, IDietService>();
+        services.AddScoped<IDietService, DietService>();
         
         // Add Configurations here
 

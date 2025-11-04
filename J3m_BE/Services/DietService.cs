@@ -32,9 +32,12 @@ namespace J3m_BE.Services
         //Create a new diet
         public async Task<DietDto?> CreateAsync(CreateDietDto dto)
         {
-           var dietname = dto.DietName?.Trim();
+           var name = dto.DietName?.Trim();
             if (string.IsNullOrWhiteSpace(dto.DietName))
                 throw new DomainException("Diet name is required");
+
+            if (await _repo.ExistsAsync(d => d.DietName.ToLower() == name.ToLower()))
+                throw new ConflictDomainException($"FoodGroup '{name}' already exists.");
 
 
             var entity = dto.ToEntity();
@@ -47,7 +50,8 @@ namespace J3m_BE.Services
         public async Task<bool> UpdateAsync(int id, UpdateDietDto dto)
         {
             var entity = await _repo.GetByIdAsync(id);
-            if (entity is null)return  false;
+            if (entity is null)
+                throw new NotFoundDomainException($"Diet with ID {id} was not found");
 
             dto.MapToEntity(entity);
             _repo.Update(entity);
@@ -59,7 +63,8 @@ namespace J3m_BE.Services
         public async Task<bool> DeleteAsync(int id)
         {
             var entity = await _repo.GetByIdAsync(id);
-            if (entity is null) return false;
+            if (entity is null) 
+                throw new NotFoundDomainException($"Diet with ID {id} was not found");
 
             _repo.Remove(entity);
             await _repo.SaveChangesAsync();

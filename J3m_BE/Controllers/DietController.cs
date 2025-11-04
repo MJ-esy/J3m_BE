@@ -16,27 +16,20 @@ namespace J3m_BE.Controllers
 
         //Get: api/diet - Returns all diets in the sysmtem
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DietDto>>> GetAll()
-        {
-            var diets = await _service.GetAllAsync();
-            return Ok(diets);
-        }
+        public async Task<ActionResult> GetAll() =>
+            Ok(await _service.GetAllAsync());
 
         //Get: api/diet/5 - Returns a specific diet ID
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<DietDto>> GetById(int id)
-        {
-            var diet = await _service.GetByIdAsync(id);
-            return diet is null ? NotFound() : Ok(diet);
-        }
+        public async Task<ActionResult<DietDto>> GetById(int id) =>
+            await _service.GetByIdAsync(id) is DietDto diet ? Ok(diet) : NotFound();
 
         //Post: api/diet - Create a new diet and return it´s ID
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateDietDto dto)
-        {
-            var id = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id }, new { id });
-        }
+        public async Task<ActionResult> Create([FromBody] CreateDietDto dto) =>
+            await _service.CreateAsync(dto) is DietDto createdDiet
+                ? CreatedAtAction(nameof(GetById), new { id = createdDiet.DietId }, createdDiet)
+                : BadRequest("Diet could not be created.");
 
         //Put: api/diet/5 - Update an existing diet; returns 204 if successful, 404 if not found
         [HttpPut("{id:int}")]
