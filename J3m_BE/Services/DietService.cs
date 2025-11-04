@@ -15,31 +15,16 @@ namespace J3m_BE.Services
             _repo = repo;
         }
 
-        // Get all Diet entities from repository and maps them to DietDto.
-        //Uses service-layer mapping for flexibility and testability.
-        public async Task<IEnumerable<DietDto>> GetAllAsync()
-        {
-            var diets = await _repo.GetAllAsync();
-            return diets.Select(d => d.ToDto());
-        }
+        //Get all Diets (maps them to DietWithCountDto)
+        public async Task<IEnumerable<DietWithCountDto>> GetAllAsync() =>
+         await _repo.GetDietWithRecipeCountAsync();
 
-        //Efficent projection - no mapping needed - Get all diets with the number of linked recipes.
-        public async Task<IEnumerable<DietWithCountDto>> GetDietsWithRecipeCountAsync()
-        {
-            return await _repo.GetDietWithRecipeCountAsync();
-
-        }
-
-        //Already projected to DTOs in repo - Get all recipe linked to a specific diet.
-        public async Task<IEnumerable<Recipe>> GetRecipesByDietAsync(int id)
-        {
-            return await _repo.GetRecipesByDietAsync(id);
-        }
+     
 
         //Get a single Diet by Id (maps it to DietDto)
         public async Task<DietDto?> GetByIdAsync(int id)
         {
-            var diet = await _repo.GetByIdAsync(id);
+            var diet = await _repo.GetWithDetailsAsync(id);
             if (diet is null)
                 throw new NotFoundDomainException($"Diet with ID {id} was not found");
             return diet.ToDto();
