@@ -13,8 +13,8 @@ namespace J3m_BE.Repositories.Implementations
         public NutrientGroupRepository(AppDbContext context) : base(context) { }
 
         //Fetch a NutrientGroup by ID including related Ingredients
-        public Task<NutrientGroup?> GetWithDetailsAsync(int id) =>
-                _context.NutrientGroups
+        public async Task<NutrientGroup?> GetWithDetailsAsync(int id) =>
+               await _context.NutrientGroups
                   .AsNoTracking()
                   .Include(n => n.IngredientLinks)
                     .ThenInclude(i => i.Ingredient)
