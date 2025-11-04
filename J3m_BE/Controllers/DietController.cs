@@ -48,17 +48,5 @@ namespace J3m_BE.Controllers
         public async Task<ActionResult> Delete(int id) =>
             await _service.DeleteAsync(id) ? NoContent() : NotFound();
 
-        //Get: api/diet/with-count - Returns all diets with the number of linked recipes
-        [HttpGet("with-count")]
-        public async Task<ActionResult> GetRecipeWithCount() =>
-            Ok (await _service.GetDietsWithRecipeCountAsync());
-
-        //Get: api/diet/5/recipes - Returns all recipes linked to a specific diet, or 404 diet not found
-        [HttpGet("{id:int}/recipes")]
-        public async Task<ActionResult> GetRecipesByDiet(int id)
-        {
-            var recipes = await _service.GetRecipesByDietAsync(id);
-            return recipes.Any() ? Ok(recipes) : NotFound();
-        }
     }
 }
