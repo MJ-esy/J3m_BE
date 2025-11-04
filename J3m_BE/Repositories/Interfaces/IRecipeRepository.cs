@@ -7,6 +7,12 @@ namespace J3m_BE.Repositories.Interfaces;
 
 public interface IRecipeRepository : IGenericRepository<Recipe>
 {
+    // Get a recipe by ID including related diets and ingredients
     Task<Recipe?> GetWithDetailsAsync(int id);
-    IQueryable<Recipe> QueryWithDietsAndIngredients(); // New method for querying with related data
+    
+    // Queryable for recipes including related diets and ingredients
+    IQueryable<Recipe> QueryWithIncludes();
+    
+    // Check if a recipe exists by name
+    Task<bool> ExistsByNameAsync(string name);
 }
