@@ -6,8 +6,8 @@ namespace J3m_BE.Repositories.Interfaces
 {
     public interface IDietRepository : IGenericRepository<Diet>
     {
-        Task <IEnumerable<DietWithCountDto>> GetDietWithRecipeCountAsync();
-        Task<IEnumerable<Recipe>> GetRecipesByDietAsync(int id);
+        Task<Diet?> GetWithDetailsAsync(int id);
 
+        Task<IEnumerable<DietWithCountDto>> GetDietWithRecipeCountAsync();
     }
 }

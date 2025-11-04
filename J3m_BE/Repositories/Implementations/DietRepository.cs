@@ -13,20 +13,15 @@ namespace J3m_BE.Repositories.Implementations
     {
         public DietRepository(AppDbContext context) : base(context) { }
 
-        //Returns all recipes that are linked to a specific diet - projected to DTOs
-        public async Task<IEnumerable<Recipe>> GetRecipesByDietAsync(int id)
-        {
-            return await _context.DietRecipes
+        //Return a single diet along with its linked recipes
+        public async Task<Diet?> GetWithDetailsAsync(int id) =>
+        
+            await _context.Diets
                 .AsNoTracking()
-                .Where(dr => dr.DietId == id)
-                .Include(dr => dr.Recipe)
-                 .Select(dr => new Recipe
-                 {
-                     RecipeId = dr.Recipe.RecipeId,
-                     RecipeName = dr.Recipe.RecipeName
-                 })
-                .ToListAsync();
-        }
+                .Include(d => d.RecipeLinks)
+                .ThenInclude(r => r.Recipe)
+                .FirstOrDefaultAsync(d => d.DietId == id);
+        
 
 
         //Returns a list of all diets along with the number of recipes linked to each diet
@@ -43,20 +38,7 @@ namespace J3m_BE.Repositories.Implementations
                  })
                 .ToListAsync();
         }
-
     }
 }
 
-
-
-
-//21 + 38 Include(d => d.RecipeLinks) - Loads full recipeLinks might be overkill?
-//37.Include(dr => dr.Recipe) - are we accessing other properties from dr?
-// 17 & 23. När RecipeDto finns 
-         //.Select(dr => new RecipeDto
-         // {
-         //     RecipeId = dr.RecipeId,
-         //     RecipeName = dr.Recipe.RecipeName
-         //     //... add more fields if as needed
-         // })
 
