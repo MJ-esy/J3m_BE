@@ -4,6 +4,7 @@ using J3m_BE.Data;
 using Microsoft.EntityFrameworkCore;
 using J3m_BE.Models;
 
+// use generic repo !
 namespace J3m_BE.Repositories.Implementations
 {
     public class AllergyRepository : IAllergyRepository
