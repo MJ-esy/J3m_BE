@@ -6,44 +6,6 @@ namespace J3m_BE.Data;
 //Adding data to Database when migrating
 public static class SeedData
 {
-  //Seed Admin user for development purpose
-  public static void SeedAdmin(this ModelBuilder modelBuilder)
-  {
-    modelBuilder.Entity<Admin>().HasData(
-      new Admin
-      {
-        AdminId = 1,
-        Username = "admin",
-        PasswordHash = "admin123"
-      }
-    );
-  }
-
-  //Seed Regular users for development purpose
-  public static void SeedUser(this ModelBuilder modelBuilder)
-  {
-    modelBuilder.Entity<User>().HasData(
-      new User
-      {
-        UserId = 1,
-        Username = "user1",
-        PasswordHash = "user1"
-
-      },
-      new User
-      {
-        UserId = 2,
-        Username = "user2",
-        PasswordHash = "user2"
-      },
-      new User
-      {
-        UserId = 3,
-        Username = "user3",
-        PasswordHash = "user3"
-      });
-  }
-
   public static void SeedDiet(this ModelBuilder modelBuilder)
   {
     modelBuilder.Entity<Diet>().HasData(
@@ -196,8 +158,6 @@ public static class SeedData
 
   public static void SeedAll(this ModelBuilder modelBuilder)
   {
-    modelBuilder.SeedAdmin();
-    modelBuilder.SeedUser();
     modelBuilder.SeedDiet();
     modelBuilder.SeedFoodGroup();
     modelBuilder.SeedNutrientGroup();
