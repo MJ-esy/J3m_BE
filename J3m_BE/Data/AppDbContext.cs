@@ -44,16 +44,45 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         .HasOne(i => i.FoodGroup)
         .WithMany(f => f.Ingredients)
         .HasForeignKey(i => i.FoodGroupId);
-
+    
+    // Cascade delete behavior for Recipe -> Link Entities
     b.Entity<UserRecipe>()
-        .HasOne(u => u.User)
-        .WithMany(ur => ur.UserRecipes)
-        .HasForeignKey(u => u.UserId);
-
+        .HasOne(ur => ur.Recipe)
+        .WithMany(r => r.UserLinks)
+        .HasForeignKey(ur => ur.RecipeId)
+        .OnDelete(DeleteBehavior.Cascade);
+    
+    b.Entity<DietRecipe>()
+        .HasOne(dr => dr.Recipe)
+        .WithMany(r => r.DietLinks)
+        .HasForeignKey(dr => dr.RecipeId)
+        .OnDelete(DeleteBehavior.Cascade);
+    
+    b.Entity<IngredientRecipe>()
+        .HasOne(ir => ir.Recipe)
+        .WithMany(r => r.IngredientLinks)
+        .HasForeignKey(ir => ir.RecipeId)
+        .OnDelete(DeleteBehavior.Cascade);
+    
+    // NO Cascade delete for Link Entities -> Parent Entities
     b.Entity<UserRecipe>()
-        .HasOne(r => r.Recipe)
-        .WithMany(ur => ur.UserLinks)
-        .HasForeignKey(r => r.RecipeId);
+        .HasOne(ur => ur.User)
+        .WithMany(u => u.UserRecipes)
+        .HasForeignKey(ur => ur.UserId)
+        .OnDelete(DeleteBehavior.Restrict);
+    
+    b.Entity<DietRecipe>()
+        .HasOne(dr => dr.Diet)
+        .WithMany(d => d.RecipeLinks)
+        .HasForeignKey(dr => dr.DietId)
+        .OnDelete(DeleteBehavior.Restrict);
+    
+    b.Entity<IngredientRecipe>()
+        .HasOne(ir => ir.Ingredient)
+        .WithMany(i => i.RecipeLinks)
+        .HasForeignKey(ir => ir.IngredientId)
+        .OnDelete(DeleteBehavior.Restrict);
+    
 
     //Data Seeding
     b.SeedAll();
