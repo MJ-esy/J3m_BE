@@ -15,8 +15,8 @@ public class Ingredient
     public string IngredientName { get; set; } = string.Empty;
     
     [ForeignKey(nameof(FoodGroup))]
-    public int FoodGroupId { get; set; }
-    public FoodGroup FoodGroup { get; set; } = null!;
+    public int? FoodGroupId { get; set; }
+    public FoodGroup? FoodGroup { get; set; }
 
     // Navigation property for the many-to-many relationships
     public ICollection<IngredientRecipe> RecipeLinks { get; set; } = new List<IngredientRecipe>();
