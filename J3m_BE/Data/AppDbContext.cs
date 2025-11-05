@@ -14,7 +14,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
   // DbSets for each entity
   public DbSet<User> Users => Set<User>();
-  public DbSet<Admin> Admins => Set<Admin>();
   public DbSet<Recipe> Recipes => Set<Recipe>();
   public DbSet<Ingredient> Ingredients => Set<Ingredient>();
   public DbSet<FoodGroup> FoodGroups => Set<FoodGroup>();
