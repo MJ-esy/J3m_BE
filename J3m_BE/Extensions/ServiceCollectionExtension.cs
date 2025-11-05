@@ -13,14 +13,23 @@ namespace J3m_BE.Extensions;
 
 public static class ServiceCollectionExtension
 {
-  public static IServiceCollection AddJ3MCore(this IServiceCollection services)
-  {
+    public static IServiceCollection AddJ3MCore(this IServiceCollection services)
+    {
         // Add Repositories here
+        services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
+        services.AddScoped<INutrientGroupRepository, NutrientGroupRepository>();
         services.AddScoped<IAllergyRepository, AllergyRepository>();
+        services.AddScoped<IDietRepository, DietRepository>();
+
         // Add Services here
+        services.AddScoped<IFoodGroupService, FoodGroupService>();
+        services.AddScoped<INutrientGroupService, NutrientGroupService>();
         services.AddScoped<IAllergyService, AllergyService>();
+        services.AddScoped<IDietService, DietService>();
+        
         // Add Configurations here
 
+
         return services;
-  }
+    }
 }
