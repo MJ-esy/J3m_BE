@@ -1,4 +1,8 @@
 ﻿using J3m_BE.DTOs.Allergies;
+using J3m_BE.Extensions;
+using J3m_BE.Models;
+using J3m_BE.Mappers;
+using J3m_BE.Exceptions;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services.Interfaces;
 
@@ -13,27 +17,17 @@ namespace J3m_BE.Services.Implementations
             _allergyRepository = allergyRepository;
         }
 
-        public async Task<List<AllergyDto>> GetAllAllergiesAsync()
-        {
-            return await _allergyRepository.GetAllAllergiesAsync();
-        }
+        // Get all allergies with ingredient counts
+        public async Task<IEnumerable<AllergyDto>> GetAllAsync() =>
+            await _allergyRepository.GetAllAllergiesWithCountAsync();
 
-        public async Task<AllergyDto?> GetAllergyByIdAsync(int allergyId)
+        // Get an allergy by ID with associated ingredients
+        public async Task<AllergyDto?> GetByIdAsync(int id)
         {
-            return await _allergyRepository.GetAllergyByIdAsync(allergyId);
-        }
-
-        public async Task<AllergyCreateDto?> CreateAllergyAsync(AllergyCreateDto allergyCreateDto)
-        {
-            return await _allergyRepository.CreateAllergyAsync(allergyCreateDto);
-        }
-        public async Task<AllergyUpdateDto?> UpdateAllergyAsync(int allergyId, AllergyUpdateDto allergyUpdateDto)
-        {
-           return await _allergyRepository.UpdateAllergyAsync(allergyId, allergyUpdateDto);
-        }
-        public async Task<bool> DeleteAllergyAsync(int allergyId)
-        {
-            return await _allergyRepository.DeleteAllergyAsync(allergyId);
+            var allergy = await _allergyRepository.GetWithIngredientsAsync(id);
+            if (allergy is null)
+                throw new NotFoundDomainException($"Allergy with ID {id} not found.");
+            return allergy.ToDto();
         }
     }
 }

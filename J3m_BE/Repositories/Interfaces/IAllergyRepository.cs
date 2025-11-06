@@ -1,15 +1,18 @@
 ﻿using J3m_BE.DTOs.Allergies;
+using J3m_BE.Models;
 
 namespace J3m_BE.Repositories.Interfaces
 {
+    // Allergy repository interface extending generic repository
   
-    public interface IAllergyRepository
+    public interface IAllergyRepository : IGenericRepository<Allergy>
     {
-        Task<List<AllergyDto>> GetAllAllergiesAsync();
-        Task<AllergyDto?> GetAllergyByIdAsync(int allergyId);
-        Task<AllergyCreateDto> CreateAllergyAsync(AllergyCreateDto allergyCreateDto);
-        Task<AllergyUpdateDto?> UpdateAllergyAsync(int allergyId, AllergyUpdateDto allergyUpdateDto);
-        Task<bool> DeleteAllergyAsync(int allergyId);
+        // Count all ingredients conntected to all allergies / a table showing count and allergy
+        Task<List<AllergyDto?>> GetAllAllergiesWithCountAsync();
+
+        // Get by Id what ingredients have this allergen
+        Task<IEnumerable<Allergy?>> GetWithIngredientsAsync(int id);
+      
 
     }
 }

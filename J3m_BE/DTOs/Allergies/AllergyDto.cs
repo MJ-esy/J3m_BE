@@ -4,6 +4,6 @@
     {
         public int AllergyId { get; set; }
         public string AllergyName { get; set; } = string.Empty;
-
+        public int IngredientCount { get; set; }
     }
 }

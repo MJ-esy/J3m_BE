@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using J3m_BE.DTOs.Allergies;
+using J3m_BE.Services.Interfaces;
 
 namespace J3m_BE.Controllers
 {
@@ -8,9 +9,7 @@ namespace J3m_BE.Controllers
 
     public class AllergyController : ControllerBase
     {
-        //Dependency injection of the allergy service
-        private readonly Services.Interfaces.IAllergyService _services;
-
+       private readonly IAllergyService _service;
         public AllergyController(Services.Interfaces.IAllergyService services)
             => _services = services;
 
