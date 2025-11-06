@@ -8,10 +8,10 @@ namespace J3m_BE.Repositories.Interfaces
     public interface IAllergyRepository : IGenericRepository<Allergy>
     {
         // Count all ingredients conntected to all allergies / a table showing count and allergy
-        Task<List<AllergyDto?>> GetAllAllergiesWithCountAsync();
+        Task<IEnumerable<AllergyDto>> GetAllAllergiesWithCountAsync();
 
         // Get by Id what ingredients have this allergen
-        Task<IEnumerable<Allergy?>> GetWithIngredientsAsync(int id);
+        Task<Allergy?> GetWithIngredientsAsync(int id);
       
 
     }

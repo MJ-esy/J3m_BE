@@ -9,21 +9,19 @@ namespace J3m_BE.Repositories.Implementations
 {
     public class AllergyRepository : GenericRepository<Allergy>, IAllergyRepository
     {
-
-
         public AllergyRepository(AppDbContext context) : base(context) { }
 
         // Fetch a single Allergy with the associated ingredients
         // Fix GetWithIngredientsAsync to match interface return type
-        public async Task<IEnumerable<Allergy?>> GetWithIngredientsAsync(int id) =>
-            new List<Allergy?> { await _context.Allergies
+        public Task<Allergy?> GetWithIngredientsAsync(int id) =>
+             _context.Allergies
                 .AsNoTracking()
                 .Include(a => a.IngredientLinks)
-                .FirstOrDefaultAsync(a => a.AllergyId == id) };
+                .FirstOrDefaultAsync(a => a.AllergyId == id);
 
 
         // Fix GetAllAllergiesWithCountAsync to match interface return type
-        public async Task<List<AllergyDto?>> GetAllAllergiesWithCountAsync()
+        public async Task<IEnumerable<AllergyDto>> GetAllAllergiesWithCountAsync()
         {
             return await _context.Allergies
                 .AsNoTracking()
@@ -32,7 +30,7 @@ namespace J3m_BE.Repositories.Implementations
                     AllergyId = a.AllergyId,
                     AllergyName = a.AllergyName,
                     IngredientCount = a.IngredientLinks.Count()
-                }).Cast<AllergyDto?>().ToListAsync();
+                }).ToListAsync();
         }
     }
 }

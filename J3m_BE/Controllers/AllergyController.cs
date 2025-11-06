@@ -10,25 +10,25 @@ namespace J3m_BE.Controllers
     public class AllergyController : ControllerBase
     {
        private readonly IAllergyService _service;
-        public AllergyController(Services.Interfaces.IAllergyService services)
-            => _services = services;
+        public AllergyController(IAllergyService service)
+            => _service = service;
 
 
         // Get api/allergies
         [HttpGet]
         public async Task<ActionResult> GetAll() =>
-            Ok(await _services.GetAllAllergiesAsync());
+            Ok(await _service.GetAllAsync());
 
         // Get api/allergies/6
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetById(int id) =>
-            Ok(await _services.GetAllergyByIdAsync(id));
+            Ok(await _service.GetByIdAsync(id));
 
         // Post api/allergies
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] AllergyCreateDto dto)
         {
-            var id = await _services.CreateAllergyAsync(dto);
+            var id = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new {id }, new {id});
         }
 
@@ -36,7 +36,7 @@ namespace J3m_BE.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] AllergyUpdateDto dto)
         {
-            var result = await _services.UpdateAllergyAsync(id, dto);
+            var result = await _service.UpdateAsync(id, dto);
             return result == null ? NotFound() : Ok(result);
         }
 
@@ -44,7 +44,7 @@ namespace J3m_BE.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var success = await _services.DeleteAllergyAsync(id);
+            var success = await _service.DeleteAsync(id);
             return success ? NoContent() : NotFound();
         }
 

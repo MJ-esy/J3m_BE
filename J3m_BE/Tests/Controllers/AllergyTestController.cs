@@ -15,7 +15,7 @@ namespace J3m_BE.Tests.Controllers
         public async Task GetAllAllergies_ReturnOkWithData()
         {
             var mockService = new Mock<AllergyService>();
-            mockService.Setup(s => s.GetAllAllergiesAsync())
+            mockService.Setup(s => s.GetAllAsync())
                 .ReturnsAsync(new List<AllergyDto>
                 {
                     new AllergyDto { AllergyId = 1, AllergyName = "Peanuts" },
@@ -31,7 +31,6 @@ namespace J3m_BE.Tests.Controllers
             Assert.Equal(2, data.Count);
         }
 
-        [Fact]
-
+       
     }
 }

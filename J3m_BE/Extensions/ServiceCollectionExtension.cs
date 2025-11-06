@@ -1,5 +1,6 @@
 using J3m_BE.Repositories.Implementations;
 using J3m_BE.Repositories.Interfaces;
+using J3m_BE.Services;
 using J3m_BE.Services.Implementations;
 using J3m_BE.Services.Interfaces;
 
