@@ -16,6 +16,9 @@ namespace J3m_BE
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Identity + JWT
+            builder.Services.AddIdentityAndJwt(builder.Configuration);
+
             // Add services to the container.
             builder.Services.AddJ3MCore();
 

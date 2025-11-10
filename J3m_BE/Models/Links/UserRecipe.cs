@@ -4,8 +4,8 @@ namespace J3m_BE.Models.Links;
 
 public class UserRecipe
 {
-    public int UserId { get; set; }
-    public User User { get; set; } = null!;
+    public string UserId { get; set; }
+    public AppUser AppUser { get; set; } = null!;
     
     public int RecipeId { get; set; }
     public Recipe Recipe { get; set; } = null!;

@@ -1,6 +1,8 @@
 using J3m_BE.Repositories.Implementations;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services;
+using J3m_BE.Services.Common;
+using J3m_BE.Services.Implementations;
 using J3m_BE.Services.Interfaces;
 
 namespace J3m_BE.Extensions;
@@ -26,7 +28,13 @@ public static class ServiceCollectionExtension
         services.AddScoped<INutrientGroupService, NutrientGroupService>();
 
         services.AddScoped<IDietService, DietService>();
-        
+
+ 
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserAdminService, UserAdminService>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         // Add Configurations here
 
 
