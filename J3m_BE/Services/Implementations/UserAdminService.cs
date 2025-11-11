@@ -1,8 +1,9 @@
-﻿using J3m_BE.DTOs.Users.AdminDtos;
+﻿using J3m_BE.DTOs.Users;
 using J3m_BE.Exceptions;
 using J3m_BE.Models;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE.Services.Implementations
 {
@@ -20,6 +21,14 @@ namespace J3m_BE.Services.Implementations
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
+        //Get all users.
+        public async Task<IEnumerable<UserListItemDto>> GetAllAsync() =>
+         await _userManager.Users
+            .AsNoTracking()
+            .Select(u => new UserListItemDto { Id = u.Id, UserName = u.UserName!, Email = u.Email, DisplayName = u.DisplayName })
+            .ToListAsync();
+
 
         // Admin creates a new user and assigns roles.
         public async Task<string> CreateUserAsync(CreateUserByAdminDto dto)

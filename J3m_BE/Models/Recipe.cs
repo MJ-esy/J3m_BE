@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using J3m_BE.Models.Links;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace J3m_BE.Models;
 
@@ -15,7 +16,12 @@ public class Recipe
     
     [MaxLength(4000)]
     public string? Description { get; set; }
-    
+
+    [ForeignKey(nameof(CreatedByUser))]
+    public string? CreatedByUserId { get; set; }
+
+    [InverseProperty(nameof(AppUser.CreateRecipes))]
+    public AppUser? CreatedByUser { get; set; }
     public int PrepTimeMinutes { get; set; }
     
     [MaxLength(1024)]

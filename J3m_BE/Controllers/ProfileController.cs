@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users.ProfileDtos;
+﻿using J3m_BE.DTOs.Users;
 using J3m_BE.Mappers;
 using J3m_BE.Models;
 using J3m_BE.Services.Common;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace J3m_BE.Controllers;
+namespace J3m_BE.DTOs.Users;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -44,9 +44,24 @@ public class ProfileController : ControllerBase
         var user = await _userManager.FindByIdAsync(_current.UserId);
         if (user is null) return NotFound();
 
-        dto.MapToEntity(user);
+        //Email changes must go through UserManager for normalization/validation
 
-        var res = await _userManager.UpdateAsync(user);
-        return res.Succeeded ? NoContent() : BadRequest(res.Errors);
+        if(!string.IsNullOrWhiteSpace(dto.Email) && !string.Equals(dto.Email.Trim(), user.Email, StringComparison.OrdinalIgnoreCase))
+        {
+            var setEmail = await _userManager.SetEmailAsync(user, dto.Email.Trim());
+            if (!setEmail.Succeeded)
+                return BadRequest(setEmail.Errors);
+        }
+
+        //DisplayName is custom field; safe to set then UpdateAsync 
+        if (!string.IsNullOrWhiteSpace(dto.DisplayName))
+        {
+            user.DisplayName = dto.DisplayName.Trim();
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+        }
+        return NoContent();
+
     }
 }

@@ -20,7 +20,12 @@ public static class IdentityJwtExtension
         services.AddIdentity<AppUser, IdentityRole>(opt =>
         {
             opt.User.RequireUniqueEmail = true;
-            opt.Password.RequiredLength = 6;
+            opt.Password.RequiredLength = 8;
+            opt.Password.RequireDigit = true;
+            opt.Password.RequireUppercase = true;
+            opt.Password.RequireLowercase = true;
+            opt.Password.RequireNonAlphanumeric = true;
+
         })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
@@ -39,7 +44,8 @@ public static class IdentityJwtExtension
                     ValidAudience = jwt["Audience"],
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
-                    ValidateLifetime = true
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -57,7 +63,7 @@ public static class IdentityJwtExtension
         var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
-        string[] roles = ["Admin", "User"];
+        string[] roles =new[] { "Admin", "User" };
         foreach (var r in roles)
             if (!await roleMgr.RoleExistsAsync(r))
                 await roleMgr.CreateAsync(new IdentityRole(r));

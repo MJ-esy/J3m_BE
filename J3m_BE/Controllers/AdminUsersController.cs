@@ -1,9 +1,10 @@
-﻿using J3m_BE.DTOs.Users.AdminDtos;
+﻿using J3m_BE.DTOs.Users;
 using J3m_BE.Models;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE.Controllers;
 
@@ -16,12 +17,19 @@ public class AdminUsersController : ControllerBase
 {
     private readonly IUserAdminService _adminService;
     private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AdminUsersController(IUserAdminService adminService, UserManager<AppUser> userManager)
+    public AdminUsersController(IUserAdminService adminService, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _adminService = adminService;
         _userManager = userManager;
+        _roleManager = roleManager;
     }
+
+    //List users(light projection).
+    [HttpGet]
+    public async Task<ActionResult> GetAll() =>
+        Ok(await _adminService.GetAllAsync());
 
     //Create a user (admin action).
     [HttpPost]
@@ -30,7 +38,7 @@ public class AdminUsersController : ControllerBase
 
     //Replace roles for a user (admin action).
     [HttpPut("{userId}/roles")]
-    public async Task<IActionResult> SetRoles(string userId, SetRolesDto dto)
+    public async Task<ActionResult> SetRoles(string userId, SetRolesDto dto)
     {
         await _adminService.SetRolesAsync(userId, dto.Roles);
         return NoContent();
@@ -38,17 +46,9 @@ public class AdminUsersController : ControllerBase
 
     //Delete a user (admin action).
     [HttpDelete("{userId}")]
-    public async Task<IActionResult> Delete(string userId)
+    public async Task<ActionResult> Delete(string userId)
     {
         await _adminService.DeleteUserAsync(userId);
         return NoContent();
-    }
-
-    //List users (light projection).
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var users = _userManager.Users.Select(u => new { u.Id, u.UserName, u.Email });
-        return Ok(users);
     }
 }

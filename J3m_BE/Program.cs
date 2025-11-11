@@ -3,6 +3,7 @@ using J3m_BE.Data;
 using J3m_BE.Extensions;
 using J3m_BE.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace J3m_BE
 {
@@ -26,7 +27,25 @@ namespace J3m_BE
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+           
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() { Title = "J3M_BE API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Paste JWT (without 'Bearer ')"
+                });
+
+                //  Only apply security to operations that have [Authorize]
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
+
 
             var app = builder.Build();
 

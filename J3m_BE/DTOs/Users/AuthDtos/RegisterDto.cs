@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace J3m_BE.DTOs.Users.AuthDtos;
+namespace J3m_BE.DTOs.Users;
 
 
 public class RegisterDto

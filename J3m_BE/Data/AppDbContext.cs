@@ -48,20 +48,25 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasOne(i => i.FoodGroup)
             .WithMany(f => f.Ingredients)
             .HasForeignKey(i => i.FoodGroupId);
+    
+        //Kolla upp om det finns i Moas Recipe 
+        //b.Entity<Recipe>()
+         //   .HasOne(r => r.CreatedByUser)
+         //   .WithMany(u => u.CreateRecipes)
+         //   .HasForeignKey(r => r.CreatedByUserId)
+         //  .OnDelete(DeleteBehavior.Restrict);
 
         b.Entity<UserRecipe>()
-            .HasOne(ur => ur.AppUser)
-            .WithMany(ur => ur.UserRecipes)
-            .HasForeignKey(u => u.UserId);
+            .HasOne(ur => ur.User)
+            .WithMany(u => u.UserRecipes)
+            .HasForeignKey(ur => ur.UserId);
 
         b.Entity<UserRecipe>()
-            .HasOne(r => r.Recipe)
-            .WithMany(ur => ur.UserLinks)
-            .HasForeignKey(r => r.RecipeId);
+            .HasOne(ur => ur.Recipe)
+            .WithMany(r => r.UserLinks)
+            .HasForeignKey(ur => ur.RecipeId);
 
         //Data Seeding
         b.SeedAll();
     }
-    // If UserRecipe.UserId used to be int, change to string to match AppUser.Id
-    // b.Entity<UserRecipe>().Property(x => x.UserId).HasColumnType("nvarchar(450)");
 }

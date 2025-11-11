@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users.ProfileDtos;
+﻿using J3m_BE.DTOs.Users;
 using J3m_BE.Models;
 
 namespace J3m_BE.Mappers
@@ -22,11 +22,6 @@ namespace J3m_BE.Mappers
             if (!string.IsNullOrWhiteSpace(dto.DisplayName))
             
                 user.DisplayName = dto.DisplayName.Trim();
-
-            if (!string.IsNullOrWhiteSpace(dto.Email))
-
-                user.Email = dto.Email.Trim();
-            
         }
     }
 }

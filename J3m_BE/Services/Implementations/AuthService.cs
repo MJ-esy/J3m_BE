@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users.AuthDtos;
+﻿using J3m_BE.DTOs.Users;
 using J3m_BE.Models;                    
 using J3m_BE.Services.Interfaces;      
 using Microsoft.AspNetCore.Identity;   
@@ -15,17 +15,21 @@ namespace J3m_BE.Services.Implementations;
 
 public class AuthService : IAuthService
 {
+    private const string DefaultRole = "User";
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _config;
 
     public AuthService(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         IConfiguration config)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _roleManager = roleManager;
         _config = config;
     }
 
@@ -43,6 +47,10 @@ public class AuthService : IAuthService
         var create = await _userManager.CreateAsync(user, dto.Password);
         if (!create.Succeeded)
             throw new Exception(string.Join("; ", create.Errors.Select(e => e.Description)));
+
+        // Ensure default role exists, then assign
+        if (!await _roleManager.RoleExistsAsync(DefaultRole))
+            _ = await _roleManager.CreateAsync(new IdentityRole(DefaultRole));
 
         await _userManager.AddToRoleAsync(user, "User");
 
@@ -86,8 +94,8 @@ public class AuthService : IAuthService
         };
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-        var expiresMinutes = double.TryParse(jwtSection["ExpiresMinutes"], out var m) ? m : 60d;
-        var expires = DateTime.UtcNow.AddMinutes(expiresMinutes);
+        var expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSection["ExpiresMinutes"] ?? "60"));
+
 
         var token = new JwtSecurityToken(
             issuer: jwtSection["Issuer"],
