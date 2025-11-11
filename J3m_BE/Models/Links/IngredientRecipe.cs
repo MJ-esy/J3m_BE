@@ -12,6 +12,6 @@ public class IngredientRecipe
     public int RecipeId { get; set; }
     public Recipe Recipe { get; set; } = null!;
     
-    [MaxLength(200)]
-    public string? Measurements { get; set; }
+    [MaxLength(100)]
+    public string Measurement { get; set; } = string.Empty;
 }

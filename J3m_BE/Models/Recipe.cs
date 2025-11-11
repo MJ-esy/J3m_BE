@@ -22,9 +22,12 @@ public class Recipe
 
     [InverseProperty(nameof(AppUser.CreateRecipes))]
     public AppUser? CreatedByUser { get; set; }
+    
+    [Range(0, 1440)] // ADDED: Constraint for realistic prep time
     public int PrepTimeMinutes { get; set; }
     
     [MaxLength(1024)]
+    [Url] // ADDED: Validate URL format
     public string? ImageUrl { get; set; }
     
     // Navigation property for the many-to-many relationships

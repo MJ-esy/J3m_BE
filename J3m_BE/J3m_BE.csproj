@@ -30,6 +30,7 @@
     <Folder Include="DTOs\Ingredients\" />
     <Folder Include="DTOs\NutrientGroups\" />
     <Folder Include="DTOs\Recipes\" />
+    <Folder Include="DTOs\User\" />
     <Folder Include="Filters\" />
     <Folder Include="Migrations\" />
     <Folder Include="Options\" />
