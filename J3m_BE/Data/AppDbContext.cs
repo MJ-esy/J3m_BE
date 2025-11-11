@@ -48,25 +48,25 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasOne(i => i.FoodGroup)
             .WithMany(f => f.Ingredients)
             .HasForeignKey(i => i.FoodGroupId);
-    
-        //Kolla upp om det finns i Moas Recipe 
-        //b.Entity<Recipe>()
-         //   .HasOne(r => r.CreatedByUser)
-         //   .WithMany(u => u.CreateRecipes)
-         //   .HasForeignKey(r => r.CreatedByUserId)
-         //  .OnDelete(DeleteBehavior.Restrict);
 
-        b.Entity<UserRecipe>()
-            .HasOne(ur => ur.User)
-            .WithMany(u => u.UserRecipes)
-            .HasForeignKey(ur => ur.UserId);
+        b.Entity<Recipe>()
+            .HasOne(r => r.CreatedByUser)
+            .WithMany(u => u.CreateRecipes)
+            .HasForeignKey(r => r.CreatedByUserId)
+           .OnDelete(DeleteBehavior.Restrict);
 
-        b.Entity<UserRecipe>()
-            .HasOne(ur => ur.Recipe)
-            .WithMany(r => r.UserLinks)
-            .HasForeignKey(ur => ur.RecipeId);
-    // Relationships
-    b.Entity<Ingredient>()
+        //b.Entity<UserRecipe>()
+        //    .HasOne(ur => ur.User)
+        //    .WithMany(u => u.UserRecipes)
+        //    .HasForeignKey(ur => ur.UserId);
+
+        //b.Entity<UserRecipe>()
+        //    .HasOne(ur => ur.Recipe)
+        //    .WithMany(r => r.UserLinks)
+        //    .HasForeignKey(ur => ur.RecipeId);
+
+        // Relationships
+        b.Entity<Ingredient>()
         .HasOne(i => i.FoodGroup)
         .WithMany(f => f.Ingredients)
         .HasForeignKey(i => i.FoodGroupId);
