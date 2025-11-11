@@ -5,6 +5,12 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<UserSecretsId>44a85d7e-e4a1-4626-a14a-8e764842bdcf</UserSecretsId>
 </PropertyGroup>
+<ItemGroup>
+  <Compile Remove="DTOs\User\**" />
+  <Content Remove="DTOs\User\**" />
+  <EmbeddedResource Remove="DTOs\User\**" />
+  <None Remove="DTOs\User\**" />
+</ItemGroup>
 
 <ItemGroup>
 	<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -30,7 +36,6 @@
     <Folder Include="DTOs\Ingredients\" />
     <Folder Include="DTOs\NutrientGroups\" />
     <Folder Include="DTOs\Recipes\" />
-    <Folder Include="DTOs\User\" />
     <Folder Include="Filters\" />
     <Folder Include="Migrations\" />
     <Folder Include="Options\" />
