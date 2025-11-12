@@ -10,5 +10,6 @@ public class UserRecipe
     public int RecipeId { get; set; }
     public Recipe Recipe { get; set; } = null!;
     
+    // Additional properties for the relationship (optional)
     public bool IsFavorite { get; set; }
 }

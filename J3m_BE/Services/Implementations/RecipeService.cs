@@ -1,40 +1,92 @@
-using J3m_BE.Models;
+using J3m_BE.DTOs.Recipes;
+using J3m_BE.Exceptions;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using J3m_BE.Mappers;
 
 namespace J3m_BE.Services;
 
+// Service for managing Recipe entities
+
 public class RecipeService : IRecipeService
 {
-    private readonly IGenericRepository<Recipe> _repo;
-    
-    public RecipeService(IGenericRepository<Recipe> repo)
+    // Dependency: Recipe repository
+    private readonly IRecipeRepository _repo;
+    public RecipeService(IRecipeRepository repo)
     {
         _repo = repo;
     }
     
-    public async Task<IEnumerable<Recipe>> GetAllRecipesAsync()
+    // Get all Recipes (summary)
+    public async Task<IEnumerable<RecipeSummaryDto>> GetAllAsync()
     {
-        return await _repo.GetAllAsync();
+        // Fetch all recipes with related data
+        var recipes = await _repo.QueryWithIncludes().ToListAsync();
+        // Map to summary DTOs
+        return recipes.Select(r => r.ToSummaryDto());
     }
     
-    public async Task<Recipe?> GetRecipeByIdAsync(int id)
+    // Get a full Recipe by ID
+    public async Task<RecipeDetailDto> GetByIdAsync(int id)
     {
-        return await _repo.GetByIdAsync(id);
+        // Fetch recipe with related details
+        var recipe = await _repo.GetWithDetailsAsync(id);
+        if (recipe is null) 
+            throw new NotFoundDomainException($"Recipe with ID {id} not found.");
+        
+        // Map to Detail DTO
+        return recipe.ToDetailDto();
     }
     
-    public async Task<Recipe> CreateAsync(Recipe recipe)
+    // Create a new Recipe
+    public async Task<int> CreateAsync(RecipeCreateDto dto)
     {
-        await _repo.AddAsync(recipe);
-        return recipe;
+        // Validate name
+        var name = dto.RecipeName.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Recipe name cannot be empty.");
+        
+        // Check for duplicate names
+        if (await _repo.ExistsByNameAsync(name))
+            throw new ConflictDomainException($"Recipe with name '{name}' already exists.");
+        
+        // Map to entity
+        var entity = dto.ToEntity();
+        
+        // Add and save the new entity
+        await _repo.AddAsync(entity);
+        await _repo.SaveChangesAsync();
+        return entity.RecipeId;
     }
     
+    // Update an existing Recipe
+    public async Task<bool> UpdateAsync(int id, RecipeUpdateDto dto)
+    {
+        // Fetch the entity
+        var entity = await _repo.GetWithDetailsAsync(id);
+        if (entity is null)
+            throw new NotFoundDomainException($"Recipe with ID {id} not found.");
+        
+        // Map to simple fields
+        dto.ApplyUpdate(entity);
+
+        // Update entity
+        _repo.Update(entity);
+        await _repo.SaveChangesAsync();
+        return true;
+    }
+    
+    // Delete a Recipe by ID
     public async Task<bool> DeleteAsync(int id)
     {
-        var recipe = await _repo.GetByIdAsync(id);
-        if (recipe == null) return false;
-        
-        _repo.Remove(recipe);
+        // Fetch the entity
+        var entity = await _repo.GetByIdAsync(id);
+        if (entity is null)
+            throw new NotFoundDomainException($"Recipe with ID {id} not found.");
+
+        // Remove the entity
+        _repo.Remove(entity);
         await _repo.SaveChangesAsync();
         return true;
     }
