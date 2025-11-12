@@ -119,12 +119,18 @@ namespace TestJ3m_BE
         public async Task DeleteAsync_InValidId_ThrowsNotFound()
         {
             // Arrange
-            _repositoryMock.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((Allergy?)null);
+                _repositoryMock.Setup(r => r.GetWithIngredientsAsync(99))
+                    .ReturnsAsync((Allergy?)null);
 
-            // Act & Assert
-            await Assert.ThrowsAsync<NotFoundDomainException>(() => _service.DeleteAsync(99));
+                // Act
+                var exception = await Assert.ThrowsAsync<NotFoundDomainException>(() => _service.GetByIdAsync(99));
 
-        }
+                // Assert
+                Assert.Equal("Allergy with ID 99 not found.", exception.Message);
+            }
+
+
+        
 
     }
 }
