@@ -1,4 +1,5 @@
 ﻿using J3m_BE.DTOs.Users;
+using J3m_BE.Exceptions;
 using J3m_BE.Models;                    
 using J3m_BE.Services.Interfaces;      
 using Microsoft.AspNetCore.Identity;   
@@ -67,11 +68,11 @@ public class AuthService : IAuthService
             await _userManager.FindByNameAsync(dto.EmailOrUserName);
 
         if (user is null)
-            throw new Exception("Invalid credentials.");
+            throw new NotFoundDomainException("Invalid credentials.");
 
         var check = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
         if (!check.Succeeded)
-            throw new Exception("Invalid credentials.");
+            throw new Exception ("Invalid credentials.");
 
         return await CreateTokenAsync(user);
     }
