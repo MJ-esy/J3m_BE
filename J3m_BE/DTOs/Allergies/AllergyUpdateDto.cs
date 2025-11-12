@@ -2,7 +2,7 @@
 {
     public class AllergyUpdateDto
     {
-        public int? AllergyId { get; set; }
+     
         public string? AllergyName { get; set; }
 
     }
