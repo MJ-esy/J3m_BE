@@ -36,8 +36,8 @@ namespace J3m_BE.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] AllergyUpdateDto dto)
         {
-            var result = await _service.UpdateAsync(id, dto);
-            return result == null ? NotFound() : Ok(result);
+            var success = await _service.UpdateAsync(id, dto);
+            return success ? Ok() : NotFound();
         }
 
         // Delete api/alleries/6
