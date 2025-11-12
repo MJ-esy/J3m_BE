@@ -17,11 +17,11 @@ namespace J3m_BE.Services.Implementations
         }
 
         // Get all allergies with ingredient counts
-        public async Task<IEnumerable<AllergyDto>> GetAllAsync() =>
+        public async Task<IEnumerable<AllergyWithCountDto>> GetAllAsync() =>
             await _allergyRepository.GetAllAllergiesWithCountAsync();
 
         // Get an allergy by ID with associated ingredients
-        public async Task<AllergyDto?> GetByIdAsync(int id)
+        public async Task<AllergyWithCountDto?> GetByIdAsync(int id)
         {
             var allergy = await _allergyRepository.GetWithIngredientsAsync(id);
             if (allergy is null)

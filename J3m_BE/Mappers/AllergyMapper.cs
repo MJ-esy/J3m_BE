@@ -7,9 +7,9 @@ namespace J3m_BE.Mappers
     public static class AllergyMapper
     {
         // Convert Allergy entity to AllergyDto
-        public static AllergyDto ToDto(this Allergy entity)
+        public static AllergyWithCountDto ToDto(this Allergy entity)
         {
-            return new AllergyDto
+            return new AllergyWithCountDto
             {
                 AllergyId = entity.AllergyId,
                 AllergyName = entity.AllergyName,

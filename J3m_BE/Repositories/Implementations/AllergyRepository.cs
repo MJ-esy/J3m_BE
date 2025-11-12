@@ -21,11 +21,11 @@ namespace J3m_BE.Repositories.Implementations
 
 
         // Fix GetAllAllergiesWithCountAsync to match interface return type
-        public async Task<IEnumerable<AllergyDto>> GetAllAllergiesWithCountAsync()
+        public async Task<IEnumerable<AllergyWithCountDto>> GetAllAllergiesWithCountAsync()
         {
             return await _context.Allergies
                 .AsNoTracking()
-                .Select(a => new AllergyDto
+                .Select(a => new AllergyWithCountDto
                 {
                     AllergyId = a.AllergyId,
                     AllergyName = a.AllergyName,

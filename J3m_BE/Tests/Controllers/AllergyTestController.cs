@@ -16,10 +16,10 @@ namespace J3m_BE.Tests.Controllers
         {
             var mockService = new Mock<AllergyService>();
             mockService.Setup(s => s.GetAllAsync())
-                .ReturnsAsync(new List<AllergyDto>
+                .ReturnsAsync(new List<AllergyWithCountDto>
                 {
-                    new AllergyDto { AllergyId = 1, AllergyName = "Peanuts" },
-                    new AllergyDto { AllergyId = 2, AllergyName = "Milk" }
+                    new AllergyWithCountDto { AllergyId = 1, AllergyName = "Peanuts" },
+                    new AllergyWithCountDto { AllergyId = 2, AllergyName = "Milk" }
 
                 });
 
@@ -27,7 +27,7 @@ namespace J3m_BE.Tests.Controllers
             var result = await controller.GetAll();
 
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var data = Assert.IsType<List<AllergyDto>>(okResult.Value);
+            var data = Assert.IsType<List<AllergyWithCountDto>>(okResult.Value);
             Assert.Equal(2, data.Count);
         }
 
