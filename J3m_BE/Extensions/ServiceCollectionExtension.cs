@@ -2,6 +2,7 @@ using J3m_BE.Repositories;
 using J3m_BE.Repositories.Implementations;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services;
+using J3m_BE.Services.Implementations;
 using J3m_BE.Services.Interfaces;
 
 namespace J3m_BE.Extensions;
@@ -20,12 +21,14 @@ public static class ServiceCollectionExtension
         services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
         services.AddScoped<IRecipeRepository, RecipeRepository>();        
         services.AddScoped<INutrientGroupRepository, NutrientGroupRepository>();
+        services.AddScoped<IAllergyRepository, AllergyRepository>();
         services.AddScoped<IDietRepository, DietRepository>();
 
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<INutrientGroupService, NutrientGroupService>();
+        services.AddScoped<IAllergyService, AllergyService>();
         services.AddScoped<IDietService, DietService>();
         
         // Add Configurations here
