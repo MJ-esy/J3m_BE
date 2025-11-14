@@ -18,7 +18,7 @@ namespace J3m_BE.Mappers
         }
 
         // Convert CreateNutrientGroupDto to NutrientGroup entity
-        public static NutrientGroup ToEntity(this CreateNutrientGroupDto dto)
+        public static NutrientGroup ToEntity(this NutrientGroupCreateDto dto)
         {
             return new NutrientGroup
             {
@@ -27,7 +27,7 @@ namespace J3m_BE.Mappers
         }
 
         // Update existing FoodGroup entity with data from UpdateNutrientGroupDto
-        public static void MapToEntity(this UpdateNutrientGroupDto dto, NutrientGroup entity)
+        public static void MapToEntity(this NutrientGroupUpdateDto dto, NutrientGroup entity)
         {
             entity.NutrientGroupName = dto.NutrientGroupName.Trim();
         }

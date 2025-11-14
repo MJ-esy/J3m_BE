@@ -2,7 +2,7 @@
 
 namespace J3m_BE.DTOs.NutrientGroups
 {
-    public class CreateNutrientGroupDto
+    public class NutrientGroupCreateDto
     {
         [Required]
         [MaxLength(100)]
