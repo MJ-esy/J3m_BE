@@ -68,7 +68,7 @@ public class AuthService : IAuthService
             await _userManager.FindByNameAsync(dto.EmailOrUserName);
 
         if (user is null)
-            throw new NotFoundDomainException("Invalid credentials.");
+            throw new Exception("Invalid credentials.");
 
         var check = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
         if (!check.Succeeded)
