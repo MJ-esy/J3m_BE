@@ -3,9 +3,6 @@ using J3m_BE.Data;
 using J3m_BE.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 namespace J3m_BE.Extensions;
@@ -14,9 +11,6 @@ public static class IdentityJwtExtension
 {
     public static IServiceCollection AddIdentityAndJwt(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDbContext<AppDbContext>(opt =>
-            opt.UseSqlServer(config.GetConnectionString("DefaultConnection")));
-
         services.AddIdentity<AppUser, IdentityRole>(opt =>
         {
             opt.User.RequireUniqueEmail = true;
@@ -25,7 +19,6 @@ public static class IdentityJwtExtension
             opt.Password.RequireUppercase = true;
             opt.Password.RequireLowercase = true;
             opt.Password.RequireNonAlphanumeric = true;
-
         })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
@@ -33,21 +26,27 @@ public static class IdentityJwtExtension
         var jwt = config.GetSection("Jwt");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(o =>
+        // Ensure JwtBearer is the default authentication and challenge scheme.
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
             {
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = jwt["Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = jwt["Audience"],
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
+                ValidateIssuer = true,
+                ValidIssuer = jwt["Issuer"],
+                ValidateAudience = true,
+                ValidAudience = jwt["Audience"],
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
 
         services.AddAuthorization(options =>
         {
