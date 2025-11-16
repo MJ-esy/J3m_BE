@@ -2,9 +2,7 @@
 using J3m_BE.Models;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE.Controllers;
 
@@ -16,27 +14,31 @@ namespace J3m_BE.Controllers;
 public class AdminUsersController : ControllerBase
 {
     private readonly IUserAdminService _adminService;
-    private readonly UserManager<AppUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AdminUsersController(IUserAdminService adminService, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+    public AdminUsersController(IUserAdminService adminService)
     {
         _adminService = adminService;
-        _userManager = userManager;
-        _roleManager = roleManager;
+    }
+   
+    // List users (light projection).
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserListItemDto>>> GetAll()
+    {
+        var users = await _adminService.GetAllAsync();
+        return Ok(users);
     }
 
-    //List users(light projection).
-    [HttpGet]
-    public async Task<ActionResult> GetAll() =>
-        Ok(await _adminService.GetAllAsync());
-
-    //Create a user (admin action).
+    // Create a user (admin action).
     [HttpPost]
-    public async Task<ActionResult<string>> Create(CreateUserByAdminDto dto)
-        => Ok(await _adminService.CreateUserAsync(dto));
+    public async Task<ActionResult<string>> CreateUser(CreateUserByAdminDto dto)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
-    //Replace roles for a user (admin action).
+        var newUserId = await _adminService.CreateUserAsync(dto);
+        return CreatedAtAction(nameof(GetAll), new { id = newUserId }, newUserId);
+    }
+
+    // Replace roles for a user (admin action).
     [HttpPut("{userId}/roles")]
     public async Task<ActionResult> SetRoles(string userId, SetRolesDto dto)
     {
@@ -44,7 +46,7 @@ public class AdminUsersController : ControllerBase
         return NoContent();
     }
 
-    //Delete a user (admin action).
+    // Delete a user permanently (admin action).
     [HttpDelete("{userId}")]
     public async Task<ActionResult> Delete(string userId)
     {
