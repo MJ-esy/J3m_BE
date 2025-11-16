@@ -1,9 +1,10 @@
-
 using J3m_BE.Data;
 using J3m_BE.Extensions;
 using J3m_BE.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System;
 
 namespace J3m_BE
 {
@@ -27,27 +28,65 @@ namespace J3m_BE
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-           
+
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new() { Title = "J3M_BE API", Version = "v1" });
-
-                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Paste JWT (without 'Bearer ')"
+                    Title = "J3M_BE API",
+                    Version = "v1"
                 });
 
-                //  Only apply security to operations that have [Authorize]
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
+                // 1. Definiera Bearer-schemat
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "Enter JWT token. Paste only the token; Swagger UI will add the 'Bearer ' prefix.",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+
+                // 2. Säg till Swagger att ALLA endpoints kan använda detta schema
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { jwtSecurityScheme, Array.Empty<string>() }
+                });
             });
 
 
             var app = builder.Build();
+
+            // DEBUG: dump endpoint routes to console for troubleshooting
+            //try
+            //{
+            //    var endpointDataSource = app.Services.GetService<Microsoft.AspNetCore.Routing.EndpointDataSource>();
+            //    if (endpointDataSource is not null)
+            //    {
+            //        Console.WriteLine("---- Registered endpoints ----");
+            //        foreach (var ep in endpointDataSource.Endpoints)
+            //        {
+            //            Console.WriteLine(ep.DisplayName ?? ep.ToString());
+            //        }
+            //        Console.WriteLine("---- End endpoints ----");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Endpoint dump failed: " + ex.Message);
+            //}
+
+            //Runs async seeding
+            app.Services.SeedRolesAsync().GetAwaiter().GetResult();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -60,10 +99,11 @@ namespace J3m_BE
             
             app.UseHttpsRedirection();
 
-            // app.UseAuthentication();
+            app.UseAuthentication();
             app.UseAuthorization();
             
             app.MapControllers();
+
             app.Run();
         }
     }
