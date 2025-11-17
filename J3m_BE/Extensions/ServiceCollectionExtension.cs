@@ -30,9 +30,12 @@ public static class ServiceCollectionExtension
         services.AddScoped<INutrientGroupService, NutrientGroupService>();
         services.AddScoped<IDietService, DietService>();
 
- 
+       
+        services.AddScoped<IProfileService, ProfileService>();
+
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserAdminService, UserAdminService>();
+        services.AddScoped<IProfileService, ProfileService>();
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 

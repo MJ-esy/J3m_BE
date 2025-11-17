@@ -26,7 +26,7 @@ public class ProfileController : ControllerBase
 
     // GET: api/profile
     [HttpGet]
-    public async Task<ActionResult<ProfileDto>> Me()
+    public async Task<ActionResult<UserProfileDto>> Me()
     {
         if (string.IsNullOrWhiteSpace(_current.UserId)) return Unauthorized();
 
