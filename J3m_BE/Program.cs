@@ -37,7 +37,7 @@ namespace J3m_BE
                     Version = "v1"
                 });
 
-                // 1. Definiera Bearer-schemat
+                // 1. Define Bearer-scheme
                 var jwtSecurityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -56,7 +56,7 @@ namespace J3m_BE
 
                 c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
 
-                // 2. Säg till Swagger att ALLA endpoints kan använda detta schema
+                // 2.Ensures Swagger that all endpoints can use this scheme
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     { jwtSecurityScheme, Array.Empty<string>() }
@@ -65,25 +65,6 @@ namespace J3m_BE
 
 
             var app = builder.Build();
-
-            // DEBUG: dump endpoint routes to console for troubleshooting
-            //try
-            //{
-            //    var endpointDataSource = app.Services.GetService<Microsoft.AspNetCore.Routing.EndpointDataSource>();
-            //    if (endpointDataSource is not null)
-            //    {
-            //        Console.WriteLine("---- Registered endpoints ----");
-            //        foreach (var ep in endpointDataSource.Endpoints)
-            //        {
-            //            Console.WriteLine(ep.DisplayName ?? ep.ToString());
-            //        }
-            //        Console.WriteLine("---- End endpoints ----");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Endpoint dump failed: " + ex.Message);
-            //}
 
             //Runs async seeding
             app.Services.SeedRolesAsync().GetAwaiter().GetResult();
