@@ -25,8 +25,9 @@ namespace J3m_BE.Services.Implementations
         {
             var allergy = await _allergyRepository.GetWithIngredientsAsync(id);
             if (allergy is null)
-                throw new NotFoundDomainException($"Allergy with ID {id} not found.");
-           
+                throw new Exception($"Allergy with ID {id} not found.");
+
+
             return allergy.ToDto();
         }
 
@@ -52,8 +53,9 @@ namespace J3m_BE.Services.Implementations
         {
             var entity = await _allergyRepository.GetByIdAsync(id);
             if (entity is null)
-                throw new NotFoundDomainException($"Allergy with ID {id} not found.");
-           
+                throw new Exception($"Allergy with ID {id} not found.");
+
+
             dto.MapToEntity(entity);
             _allergyRepository.Update(entity);
             await _allergyRepository.SaveChangesAsync();
@@ -65,8 +67,9 @@ namespace J3m_BE.Services.Implementations
         {
             var entity = await _allergyRepository.GetByIdAsync(id);
             if (entity is null)
-                throw new NotFoundDomainException($"Allergy with ID {id} not found.");
-           
+                throw new Exception($"Allergy with ID {id} not found.");
+
+
             _allergyRepository.Remove(entity);
             await _allergyRepository.SaveChangesAsync();
             return true;
