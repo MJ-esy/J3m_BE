@@ -31,7 +31,7 @@ namespace J3m_BE.Mappers
         }
 
         //Converts a CreateDietDto (from a client request) into a Diet enity.  Creates a new Diet in the database
-        public static Diet ToEntity(this CreateDietDto dto)
+        public static Diet ToEntity(this DietCreateDto dto)
         {
             return new Diet
             {
@@ -40,7 +40,7 @@ namespace J3m_BE.Mappers
         }
 
         //Updates existing Diet entity using data from an UpdateDietDto.
-        public static void MapToEntity(this UpdateDietDto dto, Diet entity)
+        public static void MapToEntity(this DietUpdateDto dto, Diet entity)
         {
             entity.DietName = dto.DietName.Trim();
         }

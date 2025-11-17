@@ -3,7 +3,7 @@
 namespace J3m_BE.DTOs.Diets
 {
     //DTO for creating a Diet
-    public class CreateDietDto
+    public class DietCreateDto
     {
         [Required]
         [MaxLength(100)]

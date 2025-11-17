@@ -3,7 +3,7 @@
 namespace J3m_BE.DTOs.Diets
 {
     //DTO for updating existing Diet
-    public class UpdateDietDto
+    public class DietUpdateDto
     {
         public string? DietName { get; set; }
     }

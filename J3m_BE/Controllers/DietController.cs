@@ -26,14 +26,14 @@ namespace J3m_BE.Controllers
 
         //Post: api/diet - Create a new diet and return it´s ID
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateDietDto dto) =>
+        public async Task<ActionResult> Create([FromBody] DietCreateDto dto) =>
             await _service.CreateAsync(dto) is DietDto createdDiet
                 ? CreatedAtAction(nameof(GetById), new { id = createdDiet.DietId }, createdDiet)
                 : BadRequest("Diet could not be created.");
 
         //Put: api/diet/5 - Update an existing diet; returns 204 if successful, 404 if not found
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] UpdateDietDto dto) =>
+        public async Task<ActionResult> Update(int id, [FromBody] DietUpdateDto dto) =>
             await _service.UpdateAsync(id, dto) ? NoContent() : NotFound();
 
         //Delete: api/delete - Deletes a diet
