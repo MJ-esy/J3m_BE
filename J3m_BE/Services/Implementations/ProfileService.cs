@@ -1,5 +1,4 @@
-﻿using J3m_BE.DTOs.Users;
-using J3m_BE.DTOs.Users.ProfileDtos;
+﻿using J3m_BE.DTOs.Users.ProfileDtos;
 using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
 using J3m_BE.Models;
