@@ -48,6 +48,8 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             return new List<Recipe>();
 
         return await _context.Recipes
+            .Include(r => r.IngredientLinks).ThenInclude(ir => ir.Ingredient)
+            .Include(r => r.DietLinks).ThenInclude(dr => dr.Diet)
             .AsNoTracking()
             .Where(r => r.IngredientLinks.Count(ri => ingredientIdList.Contains(ri.IngredientId)) >= minMatchCount)
             .Select(r => new
