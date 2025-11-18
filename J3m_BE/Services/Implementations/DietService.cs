@@ -28,7 +28,7 @@ public class DietService : IDietService
         return diet.ToDto();
     }
     //Create a new diet
-    public async Task<DietDto?> CreateAsync(CreateDietDto dto)
+    public async Task<DietDto?> CreateAsync(DietCreateDto dto)
     {
        var name = dto.DietName?.Trim();
         if (string.IsNullOrWhiteSpace(dto.DietName))
@@ -45,7 +45,7 @@ public class DietService : IDietService
     }
 
     //Update an existing diet with new data.
-    public async Task<bool> UpdateAsync(int id, UpdateDietDto dto)
+    public async Task<bool> UpdateAsync(int id, DietUpdateDto dto)
     {
         var entity = await _repo.GetByIdAsync(id);
         if (entity is null)
