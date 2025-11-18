@@ -95,7 +95,7 @@ public class RecipeService : IRecipeService
     public async Task<List<RecipeDetailDto>> FilterByIngredientsAsync(IEnumerable<int> ingredientsIds)
     {
         //Set minimum match count
-        const int minMatchCount = 3;
+        const int minMatchCount = 2;
         var recipeList = await _repo.GetByMatchingIngredientsAsync(ingredientsIds, minMatchCount);
 
         if (recipeList is null || !recipeList.Any())
