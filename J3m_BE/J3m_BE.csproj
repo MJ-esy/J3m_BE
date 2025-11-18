@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\User\**" />
-    <Content Remove="DTOs\User\**" />
-    <EmbeddedResource Remove="DTOs\User\**" />
-    <None Remove="DTOs\User\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
@@ -37,12 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Ingredients\" />
-    <Folder Include="DTOs\NutrientGroups\" />
-    <Folder Include="DTOs\Recipes\" />
-    <Folder Include="DTOs\User\" />
     <Folder Include="Filters\" />
     <Folder Include="Migrations\" />
     <Folder Include="Options\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\J3M.Shared\J3M.Shared.csproj" />
   </ItemGroup>
 </Project>
