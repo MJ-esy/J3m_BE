@@ -1,7 +1,6 @@
 ﻿using J3m_BE.DTOs.Diets;
 using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
-using J3m_BE.Models;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services.Interfaces;
 

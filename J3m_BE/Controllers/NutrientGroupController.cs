@@ -25,7 +25,7 @@ namespace J3m_BE.Controllers
 
         // POST: api/nutrientgroup - Create a new nutrient group
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateNutrientGroupDto dto)
+        public async Task<ActionResult> Create([FromBody] NutrientGroupCreateDto dto)
         {
             var id = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id }, new { id });
@@ -33,7 +33,7 @@ namespace J3m_BE.Controllers
 
         //PUT: api/nutrientgroup/5 - Update an existing nutrient group
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] UpdateNutrientGroupDto dto) =>
+        public async Task<ActionResult> Update(int id, [FromBody] NutrientGroupUpdateDto dto) =>
             await _service.UpdateAsync(id, dto) ? NoContent() : NotFound();
 
         // DELETE: api/nutrientgroup/5 - Delete a nutrient group

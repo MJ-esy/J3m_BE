@@ -22,12 +22,14 @@ public static class ServiceCollectionExtension
         services.AddScoped<IFoodGroupRepository, FoodGroupRepository>();
         services.AddScoped<IRecipeRepository, RecipeRepository>();        
         services.AddScoped<INutrientGroupRepository, NutrientGroupRepository>();
+        services.AddScoped<IAllergyRepository, AllergyRepository>();
         services.AddScoped<IDietRepository, DietRepository>();
 
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<INutrientGroupService, NutrientGroupService>();
+        services.AddScoped<IAllergyService, AllergyService>();
         services.AddScoped<IDietService, DietService>();
 
        
