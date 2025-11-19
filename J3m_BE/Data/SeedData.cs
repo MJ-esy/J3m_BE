@@ -1,4 +1,6 @@
 using J3m_BE.Models;
+using J3m_BE.Models.Links;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE.Data;
@@ -154,13 +156,65 @@ public static class SeedData
         AllergyId = 10,
         AllergyName = "Celery"
       });
-  }
 
-  public static void SeedAll(this ModelBuilder modelBuilder)
+
+  }
+    public static void SeedTestUser(this ModelBuilder modelBuilder)
+    {
+        var hasher = new PasswordHasher<AppUser>();
+
+        var testUser = new AppUser
+        {
+            Id = "test-user-id-123", // static GUID/string
+            UserName = "testuser",
+            NormalizedUserName = "TESTUSER",
+            Email = "testuser@example.com",
+            NormalizedEmail = "TESTUSER@EXAMPLE.COM",
+            EmailConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+        };
+
+        testUser.PasswordHash = hasher.HashPassword(testUser, "Test@123");
+
+        modelBuilder.Entity<AppUser>().HasData(testUser);
+    }
+    public static void SeedTestRecipe(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Recipe>().HasData(
+            new Recipe
+            {
+                RecipeId = 1,
+                RecipeName = "Spaghetti Carbonara",
+                Description = "Classic Italian pasta with eggs, cheese, pancetta, and pepper.",
+                PrepTimeMinutes = 25
+            }
+        );
+    }
+    public static void SeedUserRecipe(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UserRecipe>().HasData(
+            new UserRecipe
+            {
+                UserId = "test-user-id-123", // must match seeded AppUser
+                RecipeId = 1,                // must match seeded Recipe
+                IsFavorite = true
+            }
+        );
+    }
+
+
+
+    public static void SeedAll(this ModelBuilder modelBuilder)
   {
     modelBuilder.SeedDiet();
     modelBuilder.SeedFoodGroup();
     modelBuilder.SeedNutrientGroup();
     modelBuilder.SeedAllergies();
-  }
+      
+        // Add test/demo data
+        modelBuilder.SeedTestUser();
+        modelBuilder.SeedTestRecipe();
+        modelBuilder.SeedUserRecipe();
+
+    }
 }
