@@ -43,4 +43,9 @@ public class RecipesController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id) =>
         await _service.DeleteAsync(id) ? NoContent() : NotFound();
+
+    //POST: api/recipes/filterWithIngredients
+    [HttpPost("filterWithIngredients")]
+    public async Task<ActionResult> Filter ([FromBody] IEnumerable<int> ingredientIds) =>
+        Ok(await _service.FilterByIngredientsAsync(ingredientIds));
 }
