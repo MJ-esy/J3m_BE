@@ -22,6 +22,7 @@ namespace J3m_BE.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
+
         [HttpPost("{recipeId}/favorite")]
         public async Task<IActionResult> FavoriteRecipe(int recipeId)
         {
@@ -49,4 +50,4 @@ namespace J3m_BE.Controllers
     }
 
 
-}
+    }
