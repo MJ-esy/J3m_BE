@@ -1,5 +1,6 @@
-﻿using J3m_BE.Data;
-using J3m_BE.Models;
+﻿using J3M.Shared.DTOs.UserRecipes;
+using J3m_BE.Data;
+using J3m_BE.Mappers;
 using J3m_BE.Models.Links;
 using J3m_BE.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,6 @@ namespace J3m_BE.Repositories.Implementations
 
         public async Task<UserRecipe?> GetUserRecipeAsync(string userId, int recipeId)
         {
-            // Null-safe query
             return await _context.UserRecipes
                 .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RecipeId == recipeId);
         }
@@ -34,11 +34,13 @@ namespace J3m_BE.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserRecipe>> GetFavoritesByUserAsync(string userId)
+        // Return DTOs instead of EF entities
+        public async Task<IEnumerable<UserRecipeDto>> GetFavoritesByUserAsync(string userId)
         {
             return await _context.UserRecipes
                 .Where(ur => ur.UserId == userId && ur.IsFavorite)
-                .Include(ur => ur.Recipe) 
+                .Include(ur => ur.Recipe)
+                .Select(ur => ur.ToDto())  
                 .ToListAsync();
         }
     }
