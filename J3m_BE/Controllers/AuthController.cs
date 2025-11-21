@@ -1,8 +1,7 @@
-﻿using J3m_BE.DTOs.Users;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using J3M.Shared.DTOs.Users;
 using J3m_BE.Services.Interfaces;
-using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace J3m_BE.Controllers
 {
@@ -23,6 +22,6 @@ namespace J3m_BE.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<AuthResponseDto>> Login(LoginDto dto)
         => Ok(await _auth.LoginAsync(dto));
-      
+
     }
 }

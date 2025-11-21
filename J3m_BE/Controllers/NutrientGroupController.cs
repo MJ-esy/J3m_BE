@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.NutrientGroups;
+﻿using J3M.Shared.DTOs.NutrientGroups;
 using Microsoft.AspNetCore.Mvc;
 
 namespace J3m_BE.Controllers
