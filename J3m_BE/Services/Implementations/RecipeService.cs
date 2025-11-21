@@ -5,7 +5,7 @@ using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace J3m_BE.Services;
+namespace J3m_BE.Services.Implementations;
 
 // Service for managing Recipe entities
 
