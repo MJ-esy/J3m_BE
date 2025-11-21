@@ -1,4 +1,4 @@
-﻿namespace J3m_BE.DTOs.Diets
+﻿namespace J3M.Shared.DTOs.Diets
 {
     // DTO for transferring Diet data.
     public class DietDto

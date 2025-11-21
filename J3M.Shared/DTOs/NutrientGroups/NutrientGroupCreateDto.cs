@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace J3m_BE.DTOs.NutrientGroups
+namespace J3M.Shared.DTOs.NutrientGroups
 {
     public class NutrientGroupCreateDto
     {

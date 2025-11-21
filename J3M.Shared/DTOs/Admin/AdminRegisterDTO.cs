@@ -1,4 +1,4 @@
-﻿namespace J3m_BE.DTOs.AdminDTOs
+﻿namespace J3M.Shared.DTOs.Admin
 {
     public class AdminRegisterDTO
     {

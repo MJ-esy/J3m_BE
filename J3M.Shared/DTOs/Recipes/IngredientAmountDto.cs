@@ -1,4 +1,4 @@
-namespace J3m_BE.DTOs.Recipes;
+namespace J3M.Shared.DTOs.Recipes;
 
 // Helper DTO for creating/updating recipes
 

@@ -1,4 +1,4 @@
-﻿namespace J3m_BE.DTOs.Allergies
+﻿namespace J3M.Shared.DTOs.Allergies
 {
     // DTO to transfer data about a allergy and the number of ingredients associated with it.
     //Computed property

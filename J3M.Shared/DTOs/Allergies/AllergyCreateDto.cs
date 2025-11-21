@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace J3m_BE.DTOs.Allergies
+namespace J3M.Shared.DTOs.Allergies
 {
     public class AllergyCreateDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace J3m_BE.DTOs.Users.ProfileDtos;
+namespace J3M.Shared.DTOs.Users.ProfileDtos;
 
 public class UserProfileDto
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace J3m_BE.DTOs.FoodGroups;
+namespace J3M.Shared.DTOs.FoodGroups;
 
 // DTO for creating a food group
 

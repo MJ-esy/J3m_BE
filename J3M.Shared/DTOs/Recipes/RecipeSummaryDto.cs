@@ -1,4 +1,4 @@
-namespace J3m_BE.DTOs.Recipes;
+namespace J3M.Shared.DTOs.Recipes;
 
 // DTO for recipe summary information
 
