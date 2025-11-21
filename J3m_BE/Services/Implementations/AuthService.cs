@@ -1,9 +1,8 @@
 ﻿using J3m_BE.DTOs.Users;
 using J3m_BE.Exceptions;
-using J3m_BE.Models;                    
-using J3m_BE.Services.Interfaces;      
-using Microsoft.AspNetCore.Identity;   
-using Microsoft.Extensions.Configuration;
+using J3m_BE.Models;
+using J3m_BE.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -34,7 +33,7 @@ public class AuthService : IAuthService
         _config = config;
     }
 
-    
+
     //Creates an AppUser, assigns default "User" role, and returns a JWT.
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
     {
@@ -58,9 +57,9 @@ public class AuthService : IAuthService
         return await CreateTokenAsync(user);
     }
 
-    
+
     //Validates credentials (email or username) and returns a JWT.
-    
+
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
     {
         var user =
@@ -68,16 +67,16 @@ public class AuthService : IAuthService
             await _userManager.FindByNameAsync(dto.EmailOrUserName);
 
         if (user is null)
-            throw new Exception("Invalid credentials.");
+            throw new ValidationDomainException("Invalid credentials.");
 
         var check = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: true);
         if (!check.Succeeded)
-            throw new Exception ("Invalid credentials.");
+            throw new ValidationDomainException("Invalid credentials.");
 
         return await CreateTokenAsync(user);
     }
 
-    
+
     // Builds and signs a JWT containing user id, name, email, and role claims.
     private async Task<AuthResponseDto> CreateTokenAsync(AppUser user)
     {

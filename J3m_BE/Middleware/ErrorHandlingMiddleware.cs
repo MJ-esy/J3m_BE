@@ -1,7 +1,7 @@
-using System.Net;
-using System.Text.Json;
 using J3m_BE.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Text.Json;
 
 namespace J3m_BE.Middleware;
 
@@ -35,6 +35,7 @@ public class ErrorHandlingMiddleware
         {
             NotFoundDomainException => (HttpStatusCode.NotFound, "Not Found"),
             ConflictDomainException => (HttpStatusCode.Conflict, "Conflict"),
+            ValidationDomainException => (HttpStatusCode.Unauthorized, "Unauthorized"),
             DomainException => (HttpStatusCode.BadRequest, "Validation Error"),
             _ => (HttpStatusCode.InternalServerError, "Internal Server Error")
         };

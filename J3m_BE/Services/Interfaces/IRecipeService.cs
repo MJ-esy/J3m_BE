@@ -1,5 +1,4 @@
 using J3m_BE.DTOs.Recipes;
-using J3m_BE.Models;
 
 namespace J3m_BE.Services.Interfaces;
 
@@ -10,4 +9,5 @@ public interface IRecipeService
     Task<int> CreateAsync(RecipeCreateDto dto);
     Task<bool> UpdateAsync(int id, RecipeUpdateDto dto);
     Task<bool> DeleteAsync(int id);
+    Task<List<RecipeDetailDto>> FilterByIngredientsAsync(IEnumerable<int> ingredientIds);
 }
