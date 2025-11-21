@@ -7,7 +7,7 @@ namespace J3m_BE.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Require authentication
+    [Authorize(Roles = "User")] // Require authentication
     public class UserRecipesController : ControllerBase
     {
         private readonly IUserRecipeService _service;
