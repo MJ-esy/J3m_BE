@@ -1,4 +1,4 @@
-﻿using J3M.Shared.DTOs.Users;
+﻿using J3M.Shared.DTOs.Users.AuthDtos;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
