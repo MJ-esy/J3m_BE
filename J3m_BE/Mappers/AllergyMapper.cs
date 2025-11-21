@@ -1,5 +1,5 @@
-﻿using J3m_BE.Models;
-using J3m_BE.DTOs.Allergies;
+﻿using J3M.Shared.DTOs.Allergies;
+using J3m_BE.Models;
 
 namespace J3m_BE.Mappers
 {

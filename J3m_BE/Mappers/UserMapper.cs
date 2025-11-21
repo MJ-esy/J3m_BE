@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users.ProfileDtos;
+﻿using J3M.Shared.DTOs.Users.ProfileDtos;
 using J3m_BE.Models;
 
 namespace J3m_BE.Mappers
@@ -12,7 +12,7 @@ namespace J3m_BE.Mappers
             {
                 Id = user.Id,
                 UserName = user.UserName ?? string.Empty,
-                  Email = user.Email ?? string.Empty,
+                Email = user.Email ?? string.Empty,
                 DisplayName = user.DisplayName
             };
         }
@@ -25,7 +25,7 @@ namespace J3m_BE.Mappers
 
             if (!string.IsNullOrWhiteSpace(dto.DisplayName))
                 user.DisplayName = dto.DisplayName.Trim();
-            
+
             if (!string.IsNullOrWhiteSpace(dto.Email))
                 user.Email = dto.Email.Trim();
 
