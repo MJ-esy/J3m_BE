@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users;
+﻿using J3M.Shared.DTOs.Users;
 using J3m_BE.Exceptions;
 using J3m_BE.Models;
 using J3m_BE.Services.Interfaces;

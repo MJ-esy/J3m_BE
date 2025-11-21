@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users;
+﻿using J3M.Shared.DTOs.Users.AdminDtos;
 
 namespace J3m_BE.Services.Interfaces
 {

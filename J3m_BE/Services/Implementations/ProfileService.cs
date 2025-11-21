@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users.ProfileDtos;
+﻿using J3M.Shared.DTOs.Users.ProfileDtos;
 using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
 using J3m_BE.Models;
@@ -23,9 +23,9 @@ namespace J3m_BE.Services.Implementations
         {
             var user = await _userManager.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == userId) 
+                .FirstOrDefaultAsync(u => u.Id == userId)
                 ?? throw new NotFoundDomainException("User not found");
-                return user.ToProfileDto();
+            return user.ToProfileDto();
         }
 
         //Update logged in users profile info details
@@ -76,7 +76,7 @@ namespace J3m_BE.Services.Implementations
         // Delete logged in users account
         public async Task DeleteAccountAsync(string userId)
         {
-            var user =  _userManager.Users
+            var user = _userManager.Users
                 .FirstOrDefault(u => u.Id == userId) ?? throw new NotFoundDomainException("User not found");
 
             var result = await _userManager.DeleteAsync(user);
