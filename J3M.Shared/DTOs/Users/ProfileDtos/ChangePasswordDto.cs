@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace J3m.Shared.DTOs.Users.ProfileDtos
+namespace J3M.Shared.DTOs.Users.ProfileDtos
 {
     public class ChangePasswordDto
     {
