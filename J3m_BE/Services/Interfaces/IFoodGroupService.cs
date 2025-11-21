@@ -1,5 +1,4 @@
-using J3m_BE.DTOs.FoodGroups;
-using J3m_BE.Models;
+using J3M.Shared.DTOs.FoodGroups;
 
 namespace J3m_BE.Services.Interfaces;
 

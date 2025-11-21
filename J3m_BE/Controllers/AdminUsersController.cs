@@ -1,5 +1,6 @@
-﻿using J3m_BE.DTOs.Users;
-using J3m_BE.Models;
+﻿
+using J3M.Shared.DTOs.Users;
+using J3M.Shared.DTOs.Users.AdminDtos;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ public class AdminUsersController : ControllerBase
     {
         _adminService = adminService;
     }
-   
+
     // List users (light projection).
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserListItemDto>>> GetAll()

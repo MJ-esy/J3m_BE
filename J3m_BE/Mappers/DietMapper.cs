@@ -1,5 +1,5 @@
-﻿using J3m_BE.Models;
-using J3m_BE.DTOs.Diets;
+﻿using J3M.Shared.DTOs.Diets;
+using J3m_BE.Models;
 
 namespace J3m_BE.Mappers
 {
@@ -20,7 +20,7 @@ namespace J3m_BE.Mappers
         }
 
         //Converts a Diet enity to DietWithCountDto. Show how many recipe are linked to each diet.
-        public static DietWithCountDto ToCountDto(this Diet entity) 
+        public static DietWithCountDto ToCountDto(this Diet entity)
         {
             return new DietWithCountDto
             {
