@@ -3,10 +3,11 @@ using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
 using J3m_BE.Models;
 using J3m_BE.Repositories.Interfaces;
+using J3m_BE.Services.Interfaces;
 
 namespace J3m_BE.Services.Implementations
 {
-    public class MealPlanService
+    public class MealPlanService : IMealPlanService
     {
         private readonly IRecipeRepository _repo;
         public MealPlanService(IRecipeRepository repo)
