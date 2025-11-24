@@ -112,11 +112,15 @@ namespace J3m_BE.Services.Implementations
         // Create Weekly Meal Plan with AI enrichment
         public async Task<WeeklyMealPlanDto> CreateWeeklyMealPlanWithAiAsync(List<int> allergyIds, List<int> dietIds)
         {
+            // Clean up lists if id == 0
+            var cleanedAllergyIds = allergyIds.NormalizeIds();
+            var cleanedDietIds = dietIds.NormalizeIds();
+
             // First, filter recipes based on allergies and diets
-            var filteredPlan = await FilterRecipeAsync(allergyIds, dietIds);
+            var filteredPlan = await FilterRecipeAsync(cleanedAllergyIds, cleanedDietIds);
 
             // use AI to enrich the meal plan with a shopping list and summary
-            var aiResponse = await _ai.EnrichAsync(filteredPlan, allergyIds, dietIds);
+            var aiResponse = await _ai.EnrichAsync(filteredPlan, cleanedAllergyIds, cleanedDietIds);
 
             // Merge AI summaries per day
             for (int i = 0; i < filteredPlan.Count && i < aiResponse.DaySummaries.Count; i++)

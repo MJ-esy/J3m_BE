@@ -13,7 +13,10 @@ namespace J3m_BE.Services.Implementations
         {
             _client = client;
             _options = options.Value;
-            _client.DefaultRequestHeaders.Add("api-key", _options.ApiKey);
+            if (!string.IsNullOrWhiteSpace(_options.ApiKey))
+            {
+                _client.DefaultRequestHeaders.Add("api-key", _options.ApiKey);
+            }
         }
 
         // Enrich the meal plan with AI-generated summaries and shopping list
@@ -34,12 +37,33 @@ namespace J3m_BE.Services.Implementations
                 max_tokens = 1000,
             };
 
-            // Send the request to Azure OpenAI with basic error handling
+            // Build a robust request Uri: prefer _options.Endpoint if valid absolute; otherwise rely on _client.BaseAddress.
             HttpResponseMessage response;
             try
             {
+                var relativePath = $"openai/deployments/{_options.Deployment}/chat/completions?api-version={_options.ApiVersion}";
+
+                // Validate and normalize endpoint
+                var endpoint = _options.Endpoint?.Trim();
+                Uri requestUri;
+
+                if (!string.IsNullOrWhiteSpace(endpoint) && Uri.TryCreate(endpoint, UriKind.Absolute, out var baseUri))
+                {
+                    // Combine baseUri and relative path, ensuring no duplicate slashes
+                    requestUri = new Uri(baseUri, relativePath);
+                }
+                else if (_client.BaseAddress != null)
+                {
+                    requestUri = new Uri(_client.BaseAddress, relativePath);
+                }
+                else
+                {
+                    // Neither endpoint nor BaseAddress available — provide a clear diagnostic message
+                    throw new InvalidOperationException("Azure OpenAI endpoint is not configured (AzureOpenAI:Endpoint) and HttpClient.BaseAddress is not set. Configure one of them.");
+                }
+
                 response = await _client.PostAsync(
-                    $"{_options.Endpoint}/openai/deployments/{_options.Deployment}/chat/completions?api-version={_options.ApiVersion}",
+                    requestUri,
                     new StringContent(System.Text.Json.JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json")
                 );
             }
@@ -84,7 +108,8 @@ namespace J3m_BE.Services.Implementations
                     .Select((summary, idx) => new DayMealPlanDto
                     {
                         Day = plan.ElementAtOrDefault(idx)?.Day ?? $"Day {idx + 1}",
-                        Meals = plan.ElementAtOrDefault(idx)?.Meals ?? new List<MealSlotDto>()
+                        Meals = plan.ElementAtOrDefault(idx)?.Meals ?? new List<MealSlotDto>(),
+                        Summary = summary ?? string.Empty
                     })
                     .ToList(),
                 ShoppingList = parsed.ShoppingList
