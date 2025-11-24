@@ -82,5 +82,6 @@ The app listens on the configured URLs. Use an API client (Postman / curl) to ca
 
 # ER Diagram
 
-![ERD](<img width="1311" height="382" alt="image" src="https://github.com/user-attachments/assets/1ecfa6a1-9faf-44dd-9438-c98226483801" />
-)
+![ERD](https://github.com/user-attachments/assets/1ecfa6a1-9faf-44dd-9438-c98226483801)
+
+Link : https://lucid.app/lucidchart/aa017ba7-3f55-43b3-bb88-349831ab3336/edit?viewport_loc=-2997%2C244%2C3625%2C1370%2C0_0&invitationId=inv_76d8da71-8d9a-4944-ba46-8d0fc200c6d1
