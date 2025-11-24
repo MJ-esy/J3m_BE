@@ -19,12 +19,21 @@ namespace J3m_BE.Controllers
 
         private string GetUserId()
         {
-            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? throw new InvalidOperationException("User identifier claim not found.");
+        }
+
+        [HttpGet("{recipeId}/favorite")]
+        public async Task<ActionResult> GetFavouriteRecipe(int recipeId)
+        {
+            var userId = GetUserId();
+            var recipe = await _service.GetUserRecipeAsync(userId, recipeId);
+            return Ok(recipe);
         }
 
 
         [HttpPost("{recipeId}/favorite")]
-        public async Task<IActionResult> FavoriteRecipe(int recipeId)
+        public async Task<ActionResult> FavoriteRecipe(int recipeId)
         {
             var userId = GetUserId();
             await _service.FavoriteRecipeAsync(userId, recipeId);
@@ -32,7 +41,7 @@ namespace J3m_BE.Controllers
         }
 
         [HttpDelete("{recipeId}/favorite")]
-        public async Task<IActionResult> UnfavoriteRecipe(int recipeId)
+        public async Task<ActionResult> UnfavoriteRecipe(int recipeId)
         {
             var userId = GetUserId();
             var result = await _service.UnfavoriteRecipeAsync(userId, recipeId);
@@ -41,7 +50,7 @@ namespace J3m_BE.Controllers
         }
 
         [HttpGet("favorites")]
-        public async Task<IActionResult> GetFavorites()
+        public async Task<ActionResult> GetFavorites()
         {
             var userId = GetUserId();
             var favorites = await _service.GetFavoriteRecipesAsync(userId);
@@ -50,4 +59,4 @@ namespace J3m_BE.Controllers
     }
 
 
-    }
+}

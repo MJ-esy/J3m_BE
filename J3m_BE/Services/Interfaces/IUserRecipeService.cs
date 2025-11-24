@@ -7,8 +7,6 @@ namespace J3m_BE.Services.Interfaces
     public interface IUserRecipeService
     {
         Task<UserRecipeDto?> GetUserRecipeAsync(string userId, int recipeId);
-        Task AddUserRecipeAsync(UserRecipeDto userRecipeDto);
-        Task UpdateUserRecipeAsync(UserRecipeDto userRecipeDto);
         Task<IEnumerable<UserRecipeDto>> GetFavoriteRecipesAsync(string userId);
 
         Task<bool> FavoriteRecipeAsync(string userId, int recipeId);
