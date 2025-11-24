@@ -1,5 +1,6 @@
 ﻿using J3M.Shared.MealPlanModels;
 using J3m_BE.Exceptions;
+using J3m_BE.Extensions;
 using J3m_BE.Mappers;
 using J3m_BE.Models;
 using J3m_BE.Repositories.Interfaces;
@@ -21,21 +22,21 @@ namespace J3m_BE.Services.Implementations
         // Filter Recipes by allergies and diets IDs
         public async Task<List<DayMealPlanDto>> FilterRecipeAsync(List<int>? allergyIds, List<int>? dietIds)
         {
+            // Clean up lists if id == 0
+            var cleanedAllergyIds = allergyIds.NormalizeIds();
+            var cleanedDietIds = dietIds.NormalizeIds();
+
             // If both lists are null or empty, return all recipes; otherwise apply filters.
             List<Recipe> recipeList;
-            var noAllergy = allergyIds == null || allergyIds.Count == 0;
-            var noDiet = dietIds == null || dietIds.Count == 0;
+            var noAllergy = cleanedAllergyIds.Count == 0;
+            var noDiet = cleanedDietIds.Count == 0;
 
             if (noAllergy && noDiet)
-            {
                 // return all recipes with related navigation properties
                 recipeList = await _repo.QueryWithIncludes().ToListAsync();
-            }
             else
-            {
                 // repository method ignores empty lists, but ensure non-null arguments
-                recipeList = await _repo.GetWithAllergyDietFilterAsync(allergyIds ?? new List<int>(), dietIds ?? new List<int>());
-            }
+                recipeList = await _repo.GetWithAllergyDietFilterAsync(cleanedAllergyIds, cleanedDietIds);
 
             if (recipeList is null || !recipeList.Any())
                 throw new NotFoundDomainException("No recipes found matching the provided allergies and diets.");
