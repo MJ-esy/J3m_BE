@@ -1,5 +1,4 @@
 using J3m_BE.Data;
-using J3m_BE.DTOs.Recipes;
 using J3m_BE.Models;
 using J3m_BE.Repositories.Implementations;
 using J3m_BE.Repositories.Interfaces;
@@ -12,6 +11,7 @@ namespace J3m_BE.Repositories;
 
 public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
 {
+    private readonly HttpClient _client;
     public RecipeRepository(AppDbContext context) : base(context)
     {
     }
@@ -66,9 +66,9 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
     //Filter recipes by allergies and diets
     public async Task<List<Recipe>> GetWithAllergyDietFilterAsync(List<int> allergyIds, List<int> dietIds)
     {
-        var recipeList = _context.Recipes.AsQueryable();
+        var recipeList = QueryWithIncludes();
 
-        if(allergyIds != null && allergyIds.Count > 0)
+        if (allergyIds != null && allergyIds.Count > 0)
         {
             recipeList = recipeList.Where(r => !r.IngredientLinks
                 .Any(ir => ir.Ingredient.AllergyLinks
@@ -80,7 +80,12 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             recipeList = recipeList.Where(r => r.DietLinks
                 .Any(dr => dietIds.Contains(dr.DietId)));
         }
+        else if (allergyIds.Count == 0 && dietIds.Count == 0)
+        {
+            return await recipeList.ToListAsync();
+        }
 
+        // If both allergyIds and dietIds are empty, return all recipes
         return await recipeList.ToListAsync();
     }
 }
