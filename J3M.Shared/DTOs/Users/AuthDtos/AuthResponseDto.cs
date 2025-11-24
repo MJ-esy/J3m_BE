@@ -1,4 +1,4 @@
-﻿namespace J3m_BE.DTOs.Users;
+﻿namespace J3M.Shared.DTOs.Users.AuthDtos;
 
 public class AuthResponseDto
 {

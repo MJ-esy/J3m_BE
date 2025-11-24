@@ -1,9 +1,9 @@
-﻿using System.Text;
-using J3m_BE.Data;
+﻿using J3m_BE.Data;
 using J3m_BE.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace J3m_BE.Extensions;
 
@@ -24,7 +24,21 @@ public static class IdentityJwtExtension
             .AddDefaultTokenProviders();
 
         var jwt = config.GetSection("Jwt");
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
+        var keyValue = jwt["Key"];
+
+        // If no JWT config present, skip registering JwtBearer so the app runs in "public" mode.
+        if (string.IsNullOrWhiteSpace(keyValue))
+        {
+            // Optional: write a clear startup warning so you know the app is running without JWT
+            Console.WriteLine("Warning: Jwt:Key is not set — running without JWT authentication. Protected endpoints requiring JWT will be inaccessible.");
+            return services;
+        }
+
+        // Continue with normal JWT registration when config exists
+        var issuer = jwt["Issuer"] ?? throw new InvalidOperationException("Missing Jwt:Issuer");
+        var audience = jwt["Audience"] ?? throw new InvalidOperationException("Missing Jwt:Audience");
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyValue));
 
         // Ensure JwtBearer is the default authentication and challenge scheme.
         services.AddAuthentication(options =>
@@ -38,9 +52,9 @@ public static class IdentityJwtExtension
             o.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = jwt["Issuer"],
+                ValidIssuer = issuer,
                 ValidateAudience = true,
-                ValidAudience = jwt["Audience"],
+                ValidAudience = audience,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,
                 ValidateLifetime = true,
@@ -62,13 +76,13 @@ public static class IdentityJwtExtension
         var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
-        string[] roles =new[] { "Admin", "User" };
+        string[] roles = new[] { "Admin", "User" };
         foreach (var r in roles)
             if (!await roleMgr.RoleExistsAsync(r))
                 await roleMgr.CreateAsync(new IdentityRole(r));
 
         //Optional: seed an admin
-           var adminEmail = "admin@example.com";
+        var adminEmail = "admin@example.com";
         var admin = await userMgr.FindByEmailAsync(adminEmail);
         if (admin is null)
         {

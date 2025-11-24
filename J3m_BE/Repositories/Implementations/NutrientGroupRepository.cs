@@ -1,5 +1,5 @@
-﻿using J3m_BE.Data;
-using J3m_BE.DTOs.NutrientGroups;
+﻿using J3M.Shared.DTOs.NutrientGroups;
+using J3m_BE.Data;
 using J3m_BE.Models;
 using J3m_BE.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;

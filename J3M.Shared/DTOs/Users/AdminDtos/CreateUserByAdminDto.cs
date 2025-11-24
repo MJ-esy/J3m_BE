@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace J3m_BE.DTOs.Users;
+namespace J3M.Shared.DTOs.Users.AdminDtos;
 
 // DTO for admin to create a new user with roles. MinLength(1) ensures there’s at least one role in the list
 public class CreateUserByAdminDto

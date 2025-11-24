@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace J3m_BE.DTOs.Diets
+﻿namespace J3M.Shared.DTOs.Diets
 {
     //DTO for updating existing Diet
     public class DietUpdateDto

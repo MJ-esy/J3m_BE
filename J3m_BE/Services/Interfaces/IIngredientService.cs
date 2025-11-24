@@ -1,4 +1,4 @@
-using J3m_BE.DTOs.Ingredients;
+using J3M.Shared.DTOs.Ingredients;
 
 namespace J3m_BE.Services.Interfaces;
 

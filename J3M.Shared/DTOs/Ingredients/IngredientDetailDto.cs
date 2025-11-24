@@ -1,4 +1,4 @@
-namespace J3m_BE.DTOs.Ingredients;
+namespace J3M.Shared.DTOs.Ingredients;
 
 // DTO for detailed ingredient information
 // Used for fetching a single ingredient with all related data (detailed view)

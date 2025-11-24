@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.NutrientGroups;
+﻿using J3M.Shared.DTOs.NutrientGroups;
 using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
 using J3m_BE.Repositories.Interfaces;

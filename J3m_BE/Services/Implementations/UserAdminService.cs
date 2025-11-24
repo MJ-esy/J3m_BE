@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Users;
+﻿using J3M.Shared.DTOs.Users.AdminDtos;
 using J3m_BE.Exceptions;
 using J3m_BE.Models;
 using J3m_BE.Services.Interfaces;
@@ -50,7 +50,7 @@ namespace J3m_BE.Services.Implementations
             return user.Id;
         }
 
-       
+
         // Replaces all roles for a specific user with the provided list.
 
         public async Task SetRolesAsync(string userId, IEnumerable<string> roles)
@@ -72,7 +72,7 @@ namespace J3m_BE.Services.Implementations
             await _userManager.AddToRolesAsync(user, roles);
         }
 
-       
+
         // Permanently deletes a user account.
         public async Task DeleteUserAsync(string userId)
         {
@@ -84,5 +84,5 @@ namespace J3m_BE.Services.Implementations
                 throw new DomainException(string.Join("; ", result.Errors.Select(e => e.Description)));
         }
     }
-    
+
 }

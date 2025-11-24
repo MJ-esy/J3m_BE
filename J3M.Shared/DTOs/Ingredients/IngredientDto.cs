@@ -1,7 +1,7 @@
-namespace J3m_BE.DTOs.Ingredients;
-
 // DTO for basic ingredient information
 // Used for listing ingredients with minimal details (basic display)
+
+namespace J3M.Shared.DTOs.Ingredients;
 
 public class IngredientDto
 {

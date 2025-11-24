@@ -1,4 +1,4 @@
-using J3m_BE.DTOs.FoodGroups;
+using J3M.Shared.DTOs.FoodGroups;
 using J3m_BE.Models;
 
 namespace J3m_BE.Mappers;
@@ -26,7 +26,7 @@ public static class FoodGroupMapper
             FoodGroupName = dto.FoodGroupName.Trim()
         };
     }
-    
+
     // Update existing FoodGroup entity with data from FoodGroupUpdateDto
     public static void MapToEntity(this FoodGroupUpdateDto dto, FoodGroup entity)
     {

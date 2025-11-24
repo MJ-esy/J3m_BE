@@ -1,8 +1,10 @@
-﻿namespace J3m_BE.DTOs.AdminDTOs
+﻿
+namespace J3M.Shared.DTOs.Admin
 {
     public class AdminLoginDTO
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        // mark required to satisfy non-nullable property warnings (CS8618)
+        public required string Username { get; set; }
+        public required string Password { get; set; }
     }
 }

@@ -1,7 +1,6 @@
-﻿using J3m_BE.DTOs.Diets;
+﻿using J3M.Shared.DTOs.Diets;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace J3m_BE.Controllers
 {

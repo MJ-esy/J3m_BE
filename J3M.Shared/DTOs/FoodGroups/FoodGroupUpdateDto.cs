@@ -1,4 +1,4 @@
-namespace J3m_BE.DTOs.FoodGroups;
+namespace J3M.Shared.DTOs.FoodGroups;
 
 // DTO for updating an existing food group
 

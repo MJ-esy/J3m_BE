@@ -1,4 +1,4 @@
-﻿namespace J3m_BE.DTOs.Allergies
+﻿namespace J3M.Shared.DTOs.Allergies
 {
     // DTO for transferring Allergy data.
     public class AllergyDto
