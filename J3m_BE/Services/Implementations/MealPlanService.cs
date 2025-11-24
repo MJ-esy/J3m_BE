@@ -4,22 +4,39 @@ using J3m_BE.Mappers;
 using J3m_BE.Models;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace J3m_BE.Services.Implementations
 {
     public class MealPlanService : IMealPlanService
     {
         private readonly IRecipeRepository _repo;
-        public MealPlanService(IRecipeRepository repo)
+        private readonly IAzureOpenAiService _ai;
+        public MealPlanService(IRecipeRepository repo, IAzureOpenAiService ai)
         {
             _repo = repo;
+            _ai = ai;
         }
 
         // Filter Recipes by allergies and diets IDs
-        public async Task<List<DayMealPlanDto>> FilterRecipeAsync(List<int> allergyIds, List<int> dietIds)
+        public async Task<List<DayMealPlanDto>> FilterRecipeAsync(List<int>? allergyIds, List<int>? dietIds)
         {
-            // Fetch recipes matching the allergy and diet filters
-            var recipeList = await _repo.GetWithAllergyDietFilterAsync(allergyIds, dietIds);
+            // If both lists are null or empty, return all recipes; otherwise apply filters.
+            List<Recipe> recipeList;
+            var noAllergy = allergyIds == null || allergyIds.Count == 0;
+            var noDiet = dietIds == null || dietIds.Count == 0;
+
+            if (noAllergy && noDiet)
+            {
+                // return all recipes with related navigation properties
+                recipeList = await _repo.QueryWithIncludes().ToListAsync();
+            }
+            else
+            {
+                // repository method ignores empty lists, but ensure non-null arguments
+                recipeList = await _repo.GetWithAllergyDietFilterAsync(allergyIds ?? new List<int>(), dietIds ?? new List<int>());
+            }
+
             if (recipeList is null || !recipeList.Any())
                 throw new NotFoundDomainException("No recipes found matching the provided allergies and diets.");
 
@@ -53,6 +70,7 @@ namespace J3m_BE.Services.Implementations
             return weeklyPlan;
         }
 
+        // Pick a recipe that is not in the usedRecipeIds and not the excluded one
         private Recipe PickRecipe(List<Recipe> recipes, HashSet<int> usedRecipeIds, Random random, int? excludeId = null)
         {
             // Catch exception if recipeList is empty
@@ -88,6 +106,30 @@ namespace J3m_BE.Services.Implementations
 
             usedRecipeIds.Add(recipe.RecipeId);
             return recipe;
+        }
+
+        // Create Weekly Meal Plan with AI enrichment
+        public async Task<WeeklyMealPlanDto> CreateWeeklyMealPlanWithAiAsync(List<int> allergyIds, List<int> dietIds)
+        {
+            // First, filter recipes based on allergies and diets
+            var filteredPlan = await FilterRecipeAsync(allergyIds, dietIds);
+
+            // use AI to enrich the meal plan with a shopping list and summary
+            var aiResponse = await _ai.EnrichAsync(filteredPlan, allergyIds, dietIds);
+
+            // Merge AI summaries per day
+            for (int i = 0; i < filteredPlan.Count && i < aiResponse.DaySummaries.Count; i++)
+            {
+                filteredPlan[i].Summary = aiResponse.DaySummaries[i].Summary;
+            }
+
+            // Return the final weekly meal plan with shopping list
+            return new WeeklyMealPlanDto
+            {
+                DaySummaries = aiResponse.DaySummaries,
+                ShoppingList = aiResponse.ShoppingList
+            };
+
         }
     }
 }
