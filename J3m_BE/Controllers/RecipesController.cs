@@ -1,4 +1,5 @@
 using J3m_BE.DTOs.Recipes;
+using J3m_BE.Services;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,15 @@ public class RecipesController : ControllerBase
 {
     // Dependency injection of the recipe service
     private readonly IRecipeService _service;
+    private readonly IIngredientService _iService;
     
-    public RecipesController(IRecipeService service) 
-        => _service = service;
+    
+    public RecipesController(IRecipeService service, IIngredientService iService)
+    {
+        _service = service;
+        _iService = iService;
+    }
+       
     
     // GET: api/recipes
     [HttpGet]
@@ -44,8 +51,19 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult> Delete(int id) =>
         await _service.DeleteAsync(id) ? NoContent() : NotFound();
 
-    //POST: api/recipes/filterWithIngredients
-    [HttpPost("filterWithIngredients")]
-    public async Task<ActionResult> Filter ([FromBody] IEnumerable<int> ingredientIds) =>
-        Ok(await _service.FilterByIngredientsAsync(ingredientIds));
+    [HttpPost("filter")]
+    public async Task<ActionResult<List<RecipeDetailDto>>> Filter([FromBody] List<string> ingredientNames)
+    {
+        // normalize to lowercase
+        var normalized = ingredientNames.Select(i => i.ToLower()).ToList();
+
+        // resolve names to IDs
+        var ids = await _iService.ResolveIdsByNamesAsync(normalized);
+
+        // filter recipes by ingredient IDs
+        var recipes = await _service.FilterByIngredientsAsync(ids);
+
+        return Ok(recipes);
+    }
+
 }
