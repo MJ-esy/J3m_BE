@@ -110,14 +110,15 @@ public class IngredientService : IIngredientService
         await _repo.SaveChangesAsync();
         return true;
     }
-    public async Task<List<int>> ResolveIdsByNamesAsync(List<string> names)
+    public async Task<List<int>> ResolveIdsByNamesAsync(IEnumerable<string> names)
     {
         var normalized = names.Select(n => n.ToLower()).ToList();
         var ingredients = await _repo.GetAllAsync();
 
         return ingredients
-            .Where(i => normalized.Contains(i.Name.ToLower()))
-            .Select(i => i.Id)
+            .Where(i => normalized.Contains(i.IngredientName.ToLower()))
+            .Select(i => i.IngredientId)
             .ToList();
     }
+
 }
