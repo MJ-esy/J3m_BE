@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Recipes;
+﻿using J3M.Shared.DTOs.Recipes;
 
 namespace J3M.Shared.MealPlanModels
 {
