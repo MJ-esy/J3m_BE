@@ -78,12 +78,12 @@ namespace J3m_BE
             app.Services.SeedRolesAsync().GetAwaiter().GetResult();
 
             // Configure the HTTP request pipeline.
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
-            
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
