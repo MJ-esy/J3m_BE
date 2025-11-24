@@ -31,7 +31,7 @@ namespace J3m_BE.Services.Implementations
                 },
                 // Model parameters
                 temperature = 0.7,
-                max_tokens = 800
+                max_tokens = 1000,
             };
 
             // Send the request to Azure OpenAI with basic error handling
