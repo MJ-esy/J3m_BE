@@ -11,6 +11,7 @@ namespace J3m_BE.Repositories;
 
 public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
 {
+    private readonly HttpClient _client;
     public RecipeRepository(AppDbContext context) : base(context)
     {
     }
@@ -44,7 +45,7 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
         var ingredientIdList = ingredientIds.ToList();
 
         //Return empty list if no ingredients provided or minMatchCount is zero or negative
-        if (!ingredientIdList.Any() || minMatchCount <= 0)
+        if (ingredientIdList.Count == 0 || minMatchCount <= 0)
             return new List<Recipe>();
 
         return await _context.Recipes
@@ -62,4 +63,29 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             .ToListAsync();
     }
 
+    //Filter recipes by allergies and diets
+    public async Task<List<Recipe>> GetWithAllergyDietFilterAsync(List<int> allergyIds, List<int> dietIds)
+    {
+        var recipeList = QueryWithIncludes();
+
+        if (allergyIds != null && allergyIds.Count > 0)
+        {
+            recipeList = recipeList.Where(r => !r.IngredientLinks
+                .Any(ir => ir.Ingredient.AllergyLinks
+                .Any(ia => allergyIds.Contains(ia.AllergyId))));
+        }
+
+        if (dietIds != null && dietIds.Count > 0)
+        {
+            recipeList = recipeList.Where(r => r.DietLinks
+                .Any(dr => dietIds.Contains(dr.DietId)));
+        }
+        else if (allergyIds.Count == 0 && dietIds.Count == 0)
+        {
+            return await recipeList.ToListAsync();
+        }
+
+        // If both allergyIds and dietIds are empty, return all recipes
+        return await recipeList.ToListAsync();
+    }
 }

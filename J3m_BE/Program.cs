@@ -1,10 +1,11 @@
+using J3M.Shared.MealPlanModels;
 using J3m_BE.Data;
 using J3m_BE.Extensions;
 using J3m_BE.Middleware;
+using J3m_BE.Services.Implementations;
+using J3m_BE.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
-using System;
 
 namespace J3m_BE
 {
@@ -13,10 +14,17 @@ namespace J3m_BE
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
             // Db Context
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            //AI Services
+            builder.Services.Configure<AzureOpenAiOptions>(builder.Configuration.GetSection("AzureOpenAI"));
+            builder.Services.AddHttpClient<IAzureOpenAiService, AzureOpenAiService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["AzureOpenAI:Endpoint"]);
+            });
 
             // Identity + JWT
             builder.Services.AddIdentityAndJwt(builder.Configuration);
@@ -72,7 +80,7 @@ namespace J3m_BE
             // Configure the HTTP request pipeline.
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            
+            }
             
             app.UseMiddleware<ErrorHandlingMiddleware>();
             
@@ -80,7 +88,7 @@ namespace J3m_BE
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.MapControllers();
 
             app.Run();
