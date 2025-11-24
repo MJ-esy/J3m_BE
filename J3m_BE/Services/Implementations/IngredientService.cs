@@ -110,4 +110,14 @@ public class IngredientService : IIngredientService
         await _repo.SaveChangesAsync();
         return true;
     }
+    public async Task<List<int>> ResolveIdsByNamesAsync(IEnumerable<string> names)
+    {
+        if (names == null || !names.Any())
+            return new List<int>();
+
+        var normalized = names.Select(n => n.Trim().ToLower()).ToList();
+
+        var ids = await _repo.ResolveIdsByNamesAsync(normalized);
+        return ids;
+    }
 }

@@ -24,8 +24,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<INutrientGroupRepository, NutrientGroupRepository>();
         services.AddScoped<IAllergyRepository, AllergyRepository>();
         services.AddScoped<IDietRepository, DietRepository>();
-        services.AddScoped<IUserRecipeRepository, UserRecipeRepository>();
-
+        services.AddScoped<IUserRecipeRepository, UserRecipeRepository>(); 
+        services.AddScoped<IIngredientRepository, IngredientRepository>();
         // Add Services here
         services.AddScoped<IFoodGroupService, FoodGroupService>();
         services.AddScoped<IRecipeService, RecipeService>();
@@ -33,8 +33,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<IAllergyService, AllergyService>();
         services.AddScoped<IDietService, DietService>();
         services.AddScoped<IUserRecipeService, UserRecipeService>();
+        services.AddScoped<IIngredientService, IngredientService>();
 
-       
         services.AddScoped<IProfileService, ProfileService>();
 
         services.AddScoped<IAuthService, AuthService>();

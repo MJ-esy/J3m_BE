@@ -1,4 +1,5 @@
 using J3m_BE.DTOs.Ingredients;
+using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,13 @@ public class IngredientsController : ControllerBase
     // Dependency injection of the ingredient service
     private readonly IIngredientService _service;
     
-    public IngredientsController(IIngredientService service) 
-        => _service = service;
-    
+
+    public IngredientsController(IIngredientService service)
+    {
+        _service = service;
+      
+    }
+
     // GET: api/ingredients
     [HttpGet]
     public async Task<IActionResult> GetAll()
@@ -55,4 +60,16 @@ public class IngredientsController : ControllerBase
         var deleted = await _service.DeleteAsync(id); // Throws Conflict if in use by Recipe
         return deleted ? NoContent() : NotFound();
     }
+
+    // POST: api/ingredients/resolve
+    [HttpPost("resolve")]
+    public async Task<ActionResult<List<int>>> Resolve([FromBody] List<string> ingredientNames)
+    {
+        if (ingredientNames == null || ingredientNames.Count == 0)
+            return BadRequest("No ingredient names provided.");
+
+        var ids = await _service.ResolveIdsByNamesAsync(ingredientNames);
+        return Ok(ids);
+    }
+
 }

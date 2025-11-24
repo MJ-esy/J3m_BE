@@ -12,4 +12,7 @@ public interface IIngredientRepository : IGenericRepository<Ingredient>
     
     // Check if used in any Recipe (to prevent deletion if in use)
     Task<bool> IsUsedInRecipeAsync(int ingredientId);
+
+   //User input is string, filter is using ID, this convert it
+    Task<List<int>> ResolveIdsByNamesAsync(IEnumerable<string> names);
 }

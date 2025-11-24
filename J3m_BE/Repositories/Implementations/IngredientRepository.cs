@@ -25,4 +25,16 @@ public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRe
     // Check if used in any Recipe (to prevent deletion if in use)
     public async Task<bool> IsUsedInRecipeAsync(int ingredientId)
     => await _context.IngredientRecipes.AnyAsync(ir => ir.IngredientId == ingredientId);
+
+    //Converts useriput from string to id
+    public async Task<List<int>> ResolveIdsByNamesAsync(IEnumerable<string> names)
+    {
+        var normalized = names.Select(n => n.Trim().ToLower()).ToList();
+
+        return await _context.Ingredients
+            .Where(i => normalized.Contains(i.IngredientName.ToLower()))
+            .Select(i => i.IngredientId)
+            .ToListAsync();
+    }
+
 }

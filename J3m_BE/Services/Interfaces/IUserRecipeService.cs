@@ -1,4 +1,5 @@
 ﻿using J3M.Shared.DTOs.UserRecipes;
+using J3m_BE.DTOs.Recipes;
 using J3m_BE.Models;
 
 namespace J3m_BE.Services.Interfaces
@@ -12,6 +13,7 @@ namespace J3m_BE.Services.Interfaces
 
         Task<bool> FavoriteRecipeAsync(string userId, int recipeId);
         Task<bool> UnfavoriteRecipeAsync(string userId, int recipeId);
+
     }
 
 }
