@@ -21,7 +21,10 @@ namespace J3m_BE
 
             //AI Services
             builder.Services.Configure<AzureOpenAiOptions>(builder.Configuration.GetSection("AzureOpenAI"));
-            builder.Services.AddHttpClient<IAzureOpenAiService, AzureOpenAiService>();
+            builder.Services.AddHttpClient<IAzureOpenAiService, AzureOpenAiService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["AzureOpenAI:Endpoint"]);
+            });
 
             // Identity + JWT
             builder.Services.AddIdentityAndJwt(builder.Configuration);
