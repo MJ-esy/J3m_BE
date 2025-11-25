@@ -4,64 +4,49 @@ using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services;
 using Moq;
 
-namespace J3M.tests.NutrientGroupTests
+namespace J3M.tests.MJ.NutrientGroupTests
 {
     public class NutrientGroupServiceTests
     {
-        //Test for successful GetByIdAsync method
-        [Fact]
-        public async Task GetByIdAsync_ReturnDetails()
+        private readonly Mock<INutrientGroupRepository> _mockRepo;
+
+        public NutrientGroupServiceTests()
         {
-            //Arrange
-            //create fake database
-            var mockRepository = new Mock<INutrientGroupRepository>();
-            //setup fake data
-            var data = new NutrientGroup { NutrientGroupId = 1, NutrientGroupName = "Carbs" };
-            //setup mock behavior
-            mockRepository.Setup(n => n.GetByIdAsync(It.Is<int>(i => i == 1)))
-                .ReturnsAsync(data);
+            _mockRepo = new Mock<INutrientGroupRepository>();
+        }
 
-            //create service with mock repository
-            var sut = new NutrientGroupService(mockRepository.Object);
+        private NutrientGroupService CreateSut() => new(_mockRepo.Object);
 
-            //Act
-            // call the method
+        // Test for successful GetByIdAsync method
+        [Fact]
+        public async Task GetByIdAsync_ReturnsDetails_WhenFound()
+        {
+            // Arrange
+            var nutrientData = new NutrientGroup { NutrientGroupId = 1, NutrientGroupName = "Carbs" };
+            // Mock the repository method that the service actually calls
+            _mockRepo.Setup(n => n.GetWithDetailsAsync(1)).ReturnsAsync(nutrientData);
+
+            var sut = CreateSut();
+
+            // Act
             var result = await sut.GetByIdAsync(1);
 
-            //Assert
-            Assert.NotNull(result);
+            // Assert
+            Xunit.Assert.NotNull(result);
+            _mockRepo.Verify(r => r.GetWithDetailsAsync(1), Times.Once);
         }
 
-        //Test for unsuccessful GetByIdAsync method
+        // Test for unsuccessful GetByIdAsync method (not found)
         [Fact]
-        public async Task GetByIdAsync_IdNotFound_ReturnNull()
+        public async Task GetByIdAsync_ThrowsNotFoundDomainException_WhenNotFound()
         {
-            //Arrange
-            //create fake database
-            var mockRepository = new Mock<INutrientGroupRepository>();
-            //setup fake data
-            //var dataList = new List<NutrientGroup> { 
-            //    new() { NutrientGroupId = 1, NutrientGroupName = "Carbs" },
-            //    new() { NutrientGroupId = 2, NutrientGroupName = "Protein" } };
+            // Arrange
+            _mockRepo.Setup(n => n.GetWithDetailsAsync(3)).ReturnsAsync((NutrientGroup?)null);
+            var sut = CreateSut();
 
-            //////setup mock behavior
-            ////mockRepository.Setup(n => n.GetByIdAsync(It.Is<int>(i=>i==3)));
-            //mockRepository.Setup(n => n.(dataList));
-
-            //create service with mock repository
-            var sut = new NutrientGroupService(mockRepository.Object);
-
-            //Act
-            // call the method
-            var result = await sut.GetByIdAsync(3);
-
-            //Assert
-            Assert.ThrowsAsync<NotFoundDomainException>(async () =>
-            {
-                await sut.GetByIdAsync(3);
-            });
-
+            // Act & Assert
+            await Xunit.Assert.ThrowsAsync<NotFoundDomainException>(() => sut.GetByIdAsync(3));
+            _mockRepo.Verify(r => r.GetWithDetailsAsync(3), Times.Once);
         }
-
     }
 }
