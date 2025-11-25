@@ -26,8 +26,9 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
-        # Add Testing here
-        #run: dotnet test --configuration Release --no-build
+       # Add Testing here
+      - name: Testing
+        run: dotnet test --configuration Release --no-build
 
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
