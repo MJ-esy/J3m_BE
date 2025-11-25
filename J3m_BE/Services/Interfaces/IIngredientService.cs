@@ -11,4 +11,7 @@ public interface IIngredientService
     Task<int> CreateAsync(IngredientCreateDto dto);
     Task<bool> UpdateAsync(int id, IngredientUpdateDto dto);
     Task<bool> DeleteAsync(int id);
+
+    // to switch from string ingredient to ID to search the DB
+    Task<List<int>> ResolveIdsByNamesAsync(IEnumerable<string> names);
 }

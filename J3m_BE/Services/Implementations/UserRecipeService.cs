@@ -1,4 +1,5 @@
 ﻿using J3M.Shared.DTOs.UserRecipes;
+using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
 using J3m_BE.Models.Links;
 using J3m_BE.Repositories.Interfaces;
@@ -15,40 +16,23 @@ namespace J3m_BE.Services.Implementations
             _repository = repository;
         }
 
+        // Get a specific UserRecipe
         public async Task<UserRecipeDto?> GetUserRecipeAsync(string userId, int recipeId)
         {
             var entity = await _repository.GetUserRecipeAsync(userId, recipeId);
             return entity?.ToDto();
         }
 
-        public async Task AddUserRecipeAsync(UserRecipeDto userRecipeDto)
-        {
-            var entity = new UserRecipe
-            {
-                UserId = userRecipeDto.UserId,
-                RecipeId = userRecipeDto.RecipeId,
-                IsFavorite = userRecipeDto.IsFavorite
-            };
-            await _repository.AddUserRecipeAsync(entity);
-        }
-
-        public async Task UpdateUserRecipeAsync(UserRecipeDto userRecipeDto)
-        {
-            var entity = new UserRecipe
-            {
-                UserId = userRecipeDto.UserId,
-                RecipeId = userRecipeDto.RecipeId,
-                IsFavorite = userRecipeDto.IsFavorite
-            };
-            await _repository.UpdateUserRecipeAsync(entity);
-        }
-
+        // Get all favorite recipes for a user
         public async Task<IEnumerable<UserRecipeDto>> GetFavoriteRecipesAsync(string userId)
         {
-            return await _repository.GetFavoritesByUserAsync(userId);
+            var favorites = await _repository.GetFavoritesByUserAsync(userId);
+            if (favorites == null)
+                throw new NotFoundDomainException("No saved recipes available");
+            return favorites.Select(f => f.ToDto());
         }
 
-        // New methods
+        // Mark a recipe as favorite for a user
         public async Task<bool> FavoriteRecipeAsync(string userId, int recipeId)
         {
             var existing = await _repository.GetUserRecipeAsync(userId, recipeId);
@@ -69,6 +53,7 @@ namespace J3m_BE.Services.Implementations
             return true;
         }
 
+        // Unmark a recipe as favorite for a user
         public async Task<bool> UnfavoriteRecipeAsync(string userId, int recipeId)
         {
             var existing = await _repository.GetUserRecipeAsync(userId, recipeId);
