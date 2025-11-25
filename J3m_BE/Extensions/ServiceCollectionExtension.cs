@@ -1,3 +1,5 @@
+using J3M.Shared.DTOs.Allergies;
+using J3M.Shared.DTOs.Diets;
 using J3M.Shared.MealPlanModels;
 using J3m_BE.Repositories;
 using J3m_BE.Repositories.Implementations;
@@ -42,6 +44,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IMealPlanService, MealPlanService>();
         services.AddScoped<IAzureOpenAiService, AzureOpenAiService>();
 
+      
 
         // Add Configurations here
 
