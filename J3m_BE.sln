@@ -12,6 +12,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J3M.tests.MJ", "J3M.tests\J
 		{4B1A7358-67FD-4F9A-91DB-1ACFA46DFC63} = {4B1A7358-67FD-4F9A-91DB-1ACFA46DFC63}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J3M.test.Jane", "J3M.test.Jane\J3M.test.Jane\J3M.test.Jane.csproj", "{04F495BE-8E0A-49F1-97E8-7140307F85E0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B1A7358-67FD-4F9A-91DB-1ACFA46DFC63} = {4B1A7358-67FD-4F9A-91DB-1ACFA46DFC63}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +35,10 @@ Global
 		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04F495BE-8E0A-49F1-97E8-7140307F85E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F495BE-8E0A-49F1-97E8-7140307F85E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F495BE-8E0A-49F1-97E8-7140307F85E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F495BE-8E0A-49F1-97E8-7140307F85E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
