@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using J3m_BE.Controllers;
 using J3m_BE.Services.Interfaces;
-using J3m_BE.DTOs.Diets;
+using J3M.Shared.DTOs.Diets;
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
 using Assert = Xunit.Assert;
