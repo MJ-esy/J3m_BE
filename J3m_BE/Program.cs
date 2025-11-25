@@ -19,15 +19,6 @@ namespace J3m_BE
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add CORS services
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowFrontend",
-                    policy => policy.WithOrigins("https://j3m.azurewebsites.net/", "https://localhost:7165/")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
-            });
-
             //AI Services
             builder.Services.Configure<AzureOpenAiOptions>(builder.Configuration.GetSection("AzureOpenAI"));
             builder.Services.AddHttpClient<IAzureOpenAiService, AzureOpenAiService>(client =>
@@ -45,6 +36,15 @@ namespace J3m_BE
             builder.Services.AddJ3MCore();
 
             builder.Services.AddControllers();
+
+            // Add CORS services
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy => policy.WithOrigins("https://j3m.azurewebsites.net/", "https://localhost:7165/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
