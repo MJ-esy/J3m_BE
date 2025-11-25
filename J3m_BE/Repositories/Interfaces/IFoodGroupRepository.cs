@@ -1,4 +1,4 @@
-using J3m_BE.DTOs.FoodGroups;
+using J3M.Shared.DTOs.FoodGroups;
 using J3m_BE.Models;
 
 namespace J3m_BE.Repositories.Interfaces;

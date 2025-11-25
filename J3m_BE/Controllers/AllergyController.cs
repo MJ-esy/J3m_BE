@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using J3m_BE.DTOs.Allergies;
+﻿using J3M.Shared.DTOs.Allergies;
 using J3m_BE.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace J3m_BE.Controllers
 {
@@ -9,7 +9,7 @@ namespace J3m_BE.Controllers
 
     public class AllergyController : ControllerBase
     {
-       private readonly IAllergyService _service;
+        private readonly IAllergyService _service;
         public AllergyController(IAllergyService service)
             => _service = service;
 
@@ -29,7 +29,7 @@ namespace J3m_BE.Controllers
         public async Task<ActionResult> Create([FromBody] AllergyCreateDto dto)
         {
             var id = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new {id }, new {id});
+            return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
 
         // Put api/allergies/6

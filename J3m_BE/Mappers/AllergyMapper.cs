@@ -1,5 +1,5 @@
-﻿using J3m_BE.Models;
-using J3m_BE.DTOs.Allergies;
+﻿using J3M.Shared.DTOs.Allergies;
+using J3m_BE.Models;
 
 namespace J3m_BE.Mappers
 {
@@ -29,6 +29,9 @@ namespace J3m_BE.Mappers
         // Update existing Allergy entity with data from AllergyUpdateDto
         public static void MapToEntity(this AllergyUpdateDto dto, Allergy entity)
         {
+            // dto.AllergyName is nullable in the DTO; guard against null before calling Trim()
+            if (dto.AllergyName is null) return;
+
             entity.AllergyName = dto.AllergyName.Trim();
         }
 
