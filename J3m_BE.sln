@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J3m_BE", "J3m_BE\J3m_BE.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J3M.Shared", "J3M.Shared\J3M.Shared.csproj", "{A65D3C96-C1A3-49FF-87A9-047B924FA447}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J3M.tests.MJ", "J3M.tests\J3M.tests.MJ.csproj", "{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B1A7358-67FD-4F9A-91DB-1ACFA46DFC63} = {4B1A7358-67FD-4F9A-91DB-1ACFA46DFC63}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +26,10 @@ Global
 		{A65D3C96-C1A3-49FF-87A9-047B924FA447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A65D3C96-C1A3-49FF-87A9-047B924FA447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A65D3C96-C1A3-49FF-87A9-047B924FA447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE4B3C3-A7E8-423F-8AD2-D70649912EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
