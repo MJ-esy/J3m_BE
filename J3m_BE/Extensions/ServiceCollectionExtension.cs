@@ -1,7 +1,11 @@
+using J3M.Shared.DTOs.Allergies;
+using J3M.Shared.DTOs.Diets;
+using J3M.Shared.MealPlanModels;
 using J3m_BE.Repositories;
 using J3m_BE.Repositories.Implementations;
 using J3m_BE.Repositories.Interfaces;
 using J3m_BE.Services;
+using J3m_BE.Services.Common;
 using J3m_BE.Services.Implementations;
 using J3m_BE.Services.Interfaces;
 
@@ -30,9 +34,19 @@ public static class ServiceCollectionExtension
         services.AddScoped<INutrientGroupService, NutrientGroupService>();
         services.AddScoped<IAllergyService, AllergyService>();
         services.AddScoped<IDietService, DietService>();
-        
-        // Add Configurations here
+       
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserAdminService, UserAdminService>();
+        services.AddScoped<IProfileService, ProfileService>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+        services.AddScoped<IMealPlanService, MealPlanService>();
+        services.AddScoped<IAzureOpenAiService, AzureOpenAiService>();
+
+      
+
+        // Add Configurations here
 
         return services;
     }

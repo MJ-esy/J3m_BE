@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.NutrientGroups;
+﻿using J3M.Shared.DTOs.NutrientGroups;
 using J3m_BE.Exceptions;
 using J3m_BE.Mappers;
 using J3m_BE.Repositories.Interfaces;
@@ -30,14 +30,14 @@ namespace J3m_BE.Services
         }
 
         // Create a new nutrient group
-        public async Task<int> CreateAsync(CreateNutrientGroupDto dto)
+        public async Task<int> CreateAsync(NutrientGroupCreateDto dto)
         {
             var name = dto.NutrientGroupName?.Trim();
             if (string.IsNullOrWhiteSpace(name))
                 throw new DomainException("NutrientGroup name is required.");
 
             // Check for duplicate names
-            if(await _repo.ExistsAsync(n=>n.NutrientGroupName.ToLower()==name.ToLower()))
+            if (await _repo.ExistsAsync(n => n.NutrientGroupName.ToLower() == name.ToLower()))
                 throw new ConflictDomainException($"NutrientGroup '{name}' already exists.");
 
             var entity = dto.ToEntity();
@@ -47,10 +47,10 @@ namespace J3m_BE.Services
         }
 
         // Update an existing nutrient group
-        public async Task<bool> UpdateAsync(int id, UpdateNutrientGroupDto dto)
+        public async Task<bool> UpdateAsync(int id, NutrientGroupUpdateDto dto)
         {
             var entity = await _repo.GetByIdAsync(id);
-            if(entity==null)
+            if (entity == null)
                 throw new NotFoundDomainException($"NutrientGroup with ID {id} not found.");
             dto.MapToEntity(entity);
             _repo.Update(entity);

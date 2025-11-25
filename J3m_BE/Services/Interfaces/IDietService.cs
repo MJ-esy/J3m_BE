@@ -1,5 +1,4 @@
-﻿using J3m_BE.DTOs.Diets;
-using J3m_BE.Models;
+﻿using J3M.Shared.DTOs.Diets;
 
 namespace J3m_BE.Services.Interfaces
 {
@@ -8,9 +7,9 @@ namespace J3m_BE.Services.Interfaces
         Task<IEnumerable<DietWithCountDto>> GetAllAsync();
 
         Task<DietDto?> GetByIdAsync(int id);
-        Task<DietDto?> CreateAsync(CreateDietDto dto);
-        Task<bool> UpdateAsync(int id,UpdateDietDto dto);
+        Task<DietDto?> CreateAsync(DietCreateDto dto);
+        Task<bool> UpdateAsync(int id, DietUpdateDto dto);
         Task<bool> DeleteAsync(int id);
-        
+
     }
 }

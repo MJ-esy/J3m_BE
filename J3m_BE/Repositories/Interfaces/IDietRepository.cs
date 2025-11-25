@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Diets;
+﻿using J3M.Shared.DTOs.Diets;
 using J3m_BE.Models;
 
 

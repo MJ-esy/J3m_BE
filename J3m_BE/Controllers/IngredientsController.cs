@@ -1,4 +1,4 @@
-using J3m_BE.DTOs.Ingredients;
+using J3M.Shared.DTOs.Ingredients;
 using J3m_BE.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +12,10 @@ public class IngredientsController : ControllerBase
 {
     // Dependency injection of the ingredient service
     private readonly IIngredientService _service;
-    
-    public IngredientsController(IIngredientService service) 
+
+    public IngredientsController(IIngredientService service)
         => _service = service;
-    
+
     // GET: api/ingredients
     [HttpGet]
     public async Task<IActionResult> GetAll()
@@ -23,7 +23,7 @@ public class IngredientsController : ControllerBase
         var items = await _service.GetAllAsync();
         return Ok(items);
     }
-    
+
     // GET: api/ingredients/5
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
@@ -31,7 +31,7 @@ public class IngredientsController : ControllerBase
         var dto = await _service.GetByIdAsync(id); // throws if not found
         return Ok(dto);
     }
-    
+
     // POST: api/ingredients
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] IngredientCreateDto dto)
@@ -39,7 +39,7 @@ public class IngredientsController : ControllerBase
         var id = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id }, new { id });
     }
-    
+
     // PUT: api/ingredients/5
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] IngredientUpdateDto dto)
@@ -47,7 +47,7 @@ public class IngredientsController : ControllerBase
         var updated = await _service.UpdateAsync(id, dto); // Throws if not found
         return updated ? NoContent() : NotFound();
     }
-    
+
     // DELETE: api/ingredients/5
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)

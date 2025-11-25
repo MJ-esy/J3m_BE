@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.NutrientGroups;
+﻿using J3M.Shared.DTOs.NutrientGroups;
 
 namespace J3m_BE.Services.Interfaces
 {
@@ -8,8 +8,8 @@ namespace J3m_BE.Services.Interfaces
         // Returning DTOs to decouple service layer from data models
         Task<IEnumerable<NutrientGroupDto>> GetAllAsync();
         Task<NutrientGroupDto?> GetByIdAsync(int id);
-        Task<int> CreateAsync(CreateNutrientGroupDto dto);
-        Task<bool> UpdateAsync(int id, UpdateNutrientGroupDto dto);
+        Task<int> CreateAsync(NutrientGroupCreateDto dto);
+        Task<bool> UpdateAsync(int id, NutrientGroupUpdateDto dto);
         Task<bool> DeleteAsync(int id);
     }
 }

@@ -1,4 +1,4 @@
-﻿using J3m_BE.DTOs.Allergies;
+﻿using J3M.Shared.DTOs.Allergies;
 
 namespace J3m_BE.Services.Interfaces
 {

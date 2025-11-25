@@ -1,4 +1,4 @@
-using J3m_BE.DTOs.Recipes;
+using J3M.Shared.DTOs.Recipes;
 using J3m_BE.Models;
 using J3m_BE.Models.Links;
 
@@ -41,7 +41,7 @@ public static class RecipeMapper
             .OrderBy(x => x.IngredientName)
         };
     }
-    
+
     // Map RecipeCreateDto to Recipe entity
     public static Recipe ToEntity(this RecipeCreateDto dto)
     {
@@ -53,28 +53,28 @@ public static class RecipeMapper
             ImageUrl = string.IsNullOrWhiteSpace(dto.ImageUrl) ? null : dto.ImageUrl!.Trim(),
         };
     }
-    
+
     // Update existing Recipe entity with data from RecipeUpdateDto
     public static void ApplyUpdate(this RecipeUpdateDto dto, Recipe entity)
     {
         if (dto.RecipeName != null)
             entity.RecipeName = dto.RecipeName.Trim();
-        
+
         if (dto.Description != null)
             entity.Description = string.IsNullOrWhiteSpace(dto.Description) ? null : dto.Description.Trim();
-        
+
         if (dto.PrepTimeMinutes.HasValue)
             entity.PrepTimeMinutes = dto.PrepTimeMinutes.Value;
-        
+
         if (dto.ImageUrl != null)
             entity.ImageUrl = string.IsNullOrWhiteSpace(dto.ImageUrl) ? null : dto.ImageUrl.Trim();
-        
+
         if (dto.Ingredients != null)
             SyncIngredientLinks(entity, dto.Ingredients);
         if (dto.DietIds != null)
             SyncDietLinks(entity, dto.DietIds);
     }
-    
+
     // Sync Ingredient links based on DTO
     private static void SyncIngredientLinks(Recipe entity, IReadOnlyCollection<IngredientAmountDto> dtos)
     {
@@ -86,17 +86,17 @@ public static class RecipeMapper
             .Select(g =>
             {
                 var last = g.Last();
-                var measurement = string.IsNullOrWhiteSpace(last.Measurement) 
-                    ? null 
+                var measurement = string.IsNullOrWhiteSpace(last.Measurement)
+                    ? null
                     : last.Measurement!.Trim();
                 return new { last.IngredientId, Measurement = measurement };
             })
             .ToDictionary(x => x.IngredientId, x => x);
-        
+
         // Quick lookup of existing links by IngredientId
         // This allows efficient checking of what needs to be added, updated, or removed
         var existingById = entity.IngredientLinks.ToDictionary(ir => ir.IngredientId, ir => ir);
-        
+
         // Remove links that are no longer desired, i.e., those not present in the desired set
         foreach (var toRemove in entity.IngredientLinks
                      .Where(ir => !requestedById.ContainsKey(ir.IngredientId))
@@ -104,7 +104,7 @@ public static class RecipeMapper
         {
             entity.IngredientLinks.Remove(toRemove);
         }
-        
+
         // Add or update links to match the desired state
         foreach (var (ingredientId, requested) in requestedById)
         {
@@ -114,7 +114,7 @@ public static class RecipeMapper
                 if (existingLink.Measurement != requested.Measurement)
                 {
                     existingLink.Measurement = requested.Measurement;
-                }   
+                }
             }
             else
             {
@@ -127,25 +127,25 @@ public static class RecipeMapper
             }
         }
     }
-    
+
     // Sync Diet links based on DTO
     private static void SyncDietLinks(Recipe entity, IReadOnlyCollection<int> dietIds)
     {
         // Clean the incoming input to get unique DietIds
         // This ensures no duplicate DietIds are processed
         var requested = dietIds.Distinct().ToHashSet();
-        
+
         // Quick lookup of existing links by DietId
         // This allows efficient checking of what needs to be added or removed
         var existing = entity.DietLinks.Select(l => l.DietId).ToHashSet();
-        
+
         // Remove links that are no longer desired
         // i.e., those DietIds not present in the desired set
         foreach (var link in entity.DietLinks.Where(l => !requested.Contains(l.DietId)).ToList())
         {
             entity.DietLinks.Remove(link);
         }
-        
+
         // Add new links for DietIds that are requested but not currently linked
         // i.e., those present in request but not in existing
         foreach (var toAdd in requested.Except(existing))

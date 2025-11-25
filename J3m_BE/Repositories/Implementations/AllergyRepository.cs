@@ -1,8 +1,8 @@
-﻿using J3m_BE.DTOs.Allergies;
-using J3m_BE.Repositories.Interfaces;
+﻿using J3M.Shared.DTOs.Allergies;
 using J3m_BE.Data;
-using Microsoft.EntityFrameworkCore;
 using J3m_BE.Models;
+using J3m_BE.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 // use generic repo !
 namespace J3m_BE.Repositories.Implementations
