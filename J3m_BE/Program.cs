@@ -19,11 +19,23 @@ namespace J3m_BE
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add CORS services
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy => policy.WithOrigins("https://j3m.azurewebsites.net/", "https://localhost:7165/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
+
             //AI Services
             builder.Services.Configure<AzureOpenAiOptions>(builder.Configuration.GetSection("AzureOpenAI"));
             builder.Services.AddHttpClient<IAzureOpenAiService, AzureOpenAiService>(client =>
             {
-                client.BaseAddress = new Uri(builder.Configuration["AzureOpenAI:Endpoint"]);
+                var endpoint = builder.Configuration["AzureOpenAI:Endpoint"];
+                if (string.IsNullOrWhiteSpace(endpoint))
+                    throw new InvalidOperationException("AzureOpenAI:Endpoint configuration is missing or empty.");
+                client.BaseAddress = new Uri(endpoint);
             });
 
             // Identity + JWT
@@ -73,6 +85,10 @@ namespace J3m_BE
 
 
             var app = builder.Build();
+
+            // Use CORS
+            app.UseCors("AllowFrontend");
+
 
             //Runs async seeding
             app.Services.SeedRolesAsync().GetAwaiter().GetResult();
